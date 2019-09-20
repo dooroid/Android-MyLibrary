@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.sendbird.mylibrary.Injection;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.bookmark.BookmarkFragment;
 import com.sendbird.mylibrary.bookmark.BookmarkPresenter;
@@ -58,7 +59,7 @@ public class LibraryPagerAdapter extends FragmentPagerAdapter {
 
             default:
                 fragment = BooksFragment.newInstance();
-                new BooksPresenter((BooksFragment) fragment);
+                new BooksPresenter(Injection.provideBooksRepository(mContext.getApplicationContext()), (BooksFragment) fragment);
         }
 
         return fragment;
