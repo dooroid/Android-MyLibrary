@@ -1,5 +1,6 @@
 package com.sendbird.mylibrary.books;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.mylibrary.R;
+import com.sendbird.mylibrary.bookdetail.BookDetailActivity;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.BookItemListener;
 import com.sendbird.mylibrary.ui.SimpleBooksAdapter;
@@ -76,6 +78,8 @@ public class BooksFragment extends Fragment implements BooksContract.View {
 
     @Override
     public void showBookDetailsUi(String bookId) {
-
+        Intent intent = new Intent(getContext(), BookDetailActivity.class);
+        intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, bookId);
+        startActivity(intent);
     }
 }
