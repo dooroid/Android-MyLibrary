@@ -25,6 +25,10 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation "com.google.android.material:material:$materialVersion"
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
