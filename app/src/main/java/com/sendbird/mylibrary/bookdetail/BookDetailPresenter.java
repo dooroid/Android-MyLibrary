@@ -1,8 +1,9 @@
 package com.sendbird.mylibrary.bookdetail;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import com.sendbird.mylibrary.data.Book;
+import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.data.source.BooksRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,10 +13,10 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     private final BookDetailContract.View mBookDetailView;
 
-    @Nullable
+    @NonNull
     private String mBookId;
 
-    public BookDetailPresenter(@Nullable String bookId, @NonNull BooksRepository booksRepository, @NonNull BookDetailContract.View bookDetailView) {
+    public BookDetailPresenter(@NonNull String bookId, @NonNull BooksRepository booksRepository, @NonNull BookDetailContract.View bookDetailView) {
 
         mBookId = bookId;
 
@@ -27,6 +28,16 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public void start() {
-        // loadBookmark();
+        mBooksRepository.getBook(mBookId, new BooksDataSource.GetBookCallback() {
+            @Override
+            public void onBookLoaded(Book book) {
+                mBookDetailView.showBookDetail(book);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
     }
 }

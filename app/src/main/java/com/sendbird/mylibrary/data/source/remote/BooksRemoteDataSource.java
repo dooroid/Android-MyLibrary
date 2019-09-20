@@ -48,19 +48,38 @@ public class BooksRemoteDataSource implements BooksDataSource {
                                    @Nullable Response<ResponseBody> response) {
                 if (response != null && response.body() != null) {
                     callback.onBooksLoaded(response.body().books);
+                } else {
+                    callback.onDataNotAvailable();
                 }
             }
 
             @Override
             public void onFailure(@Nullable Call<ResponseBody> call, @NonNull Throwable t) {
-                System.out.println(t.toString());
+                callback.onDataNotAvailable();
             }
         });
     };
 
     @Override
-    public void getBook(@NonNull String bookId, @NonNull GetBookCallback callback) {
+    public void getBook(@NonNull String bookId, @NonNull final GetBookCallback callback) {
+        BookService service = mRetrofit.create(BookService.class);
+        Call<Book> call = service.getBook(bookId);
+        call.enqueue(new Callback<Book>() {
+            @Override
+            public void onResponse(@Nullable Call<Book> call,
+                                   @Nullable Response<Book> response) {
+                if (response != null && response.body() != null) {
+                    callback.onBookLoaded(response.body());
+                } else {
+                    callback.onDataNotAvailable();
+                }
+            }
 
+            @Override
+            public void onFailure(@Nullable Call<Book> call, @Nullable Throwable t) {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override

@@ -82,7 +82,7 @@ public class BooksRepository implements BooksDataSource {
         Book cachedBook = getBookWithId(bookId);
 
         // Respond immediately with cache if available
-        if (cachedBook != null) {
+        if (cachedBook != null && cachedBook.getIsbn10() != null) {
             callback.onBookLoaded(cachedBook);
             return;
         }

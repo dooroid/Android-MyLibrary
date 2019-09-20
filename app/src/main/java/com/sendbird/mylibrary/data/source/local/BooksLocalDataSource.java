@@ -71,7 +71,7 @@ public class BooksLocalDataSource implements BooksDataSource {
                 mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (book != null) {
+                        if (book != null && book.getIsbn10() != null) {
                             callback.onBookLoaded(book);
                         } else {
                             callback.onDataNotAvailable();
