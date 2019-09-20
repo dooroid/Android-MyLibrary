@@ -85,6 +85,30 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
+    public void addBookmark(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateBookmark(book.getId(), true);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
+    public void removeBookmark(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateBookmark(book.getId(), false);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
     public void saveBook(@NonNull final Book book) {
         checkNotNull(book);
         Runnable saveRunnable = new Runnable() {

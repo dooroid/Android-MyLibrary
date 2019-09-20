@@ -16,6 +16,8 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     @NonNull
     private String mBookId;
 
+    private Book mBook;
+
     public BookDetailPresenter(@NonNull String bookId, @NonNull BooksRepository booksRepository, @NonNull BookDetailContract.View bookDetailView) {
 
         mBookId = bookId;
@@ -28,10 +30,16 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public void start() {
+        openBook();
+    }
+
+    private void openBook() {
         mBooksRepository.getBook(mBookId, new BooksDataSource.GetBookCallback() {
             @Override
             public void onBookLoaded(Book book) {
-                mBookDetailView.showBookDetail(book);
+                mBook = book;
+                mBookDetailView.showBookDetail(mBook);
+                mBookDetailView.showBookmark(mBook.isBookmark());
             }
 
             @Override
@@ -39,5 +47,20 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
                 System.out.println("onDataNotAvailable");
             }
         });
+    }
+
+    @Override
+    public void bookmarkBook() {
+        if (mBook == null) {
+            return;
+        }
+
+        if (mBook.isBookmark()) {
+            mBooksRepository.removeBookmark(mBook);
+        } else {
+            mBooksRepository.addBookmark(mBook);
+        }
+
+        openBook();
     }
 }

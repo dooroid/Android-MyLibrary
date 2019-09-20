@@ -7,9 +7,6 @@ import androidx.annotation.Nullable;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,6 +77,16 @@ public class BooksRemoteDataSource implements BooksDataSource {
                 callback.onDataNotAvailable();
             }
         });
+    }
+
+    @Override
+    public void addBookmark(@NonNull Book book) {
+
+    }
+
+    @Override
+    public void removeBookmark(@NonNull Book book) {
+
     }
 
     @Override

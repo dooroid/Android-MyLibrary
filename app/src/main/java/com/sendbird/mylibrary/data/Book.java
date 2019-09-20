@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -88,9 +89,8 @@ public final class Book {
     @SerializedName(value = "desc")
     private final String mDesc;
 
-    @ColumnInfo(name = "completed")
-    private final boolean mCompleted;
-
+    @ColumnInfo(name = "bookmark")
+    private final boolean mBookmark;
 
     public Book(@Nullable String title,
                 @Nullable String subtitle,
@@ -106,7 +106,7 @@ public final class Book {
                 @Nullable String year,
                 @Nullable String rating,
                 @Nullable String desc,
-                boolean mCompleted) {
+                boolean bookmark) {
 
         this.mTitle = title;
         this.mSubtitle = subtitle;
@@ -122,7 +122,7 @@ public final class Book {
         this.mYear = year;
         this.mRating = rating;
         this.mDesc = desc;
-        this.mCompleted = mCompleted;
+        this.mBookmark = bookmark;
     }
 
     @Nullable
@@ -195,8 +195,8 @@ public final class Book {
         return mDesc;
     }
 
-    public boolean isCompleted() {
-        return mCompleted;
+    public boolean isBookmark() {
+        return mBookmark;
     }
 
 //    /**

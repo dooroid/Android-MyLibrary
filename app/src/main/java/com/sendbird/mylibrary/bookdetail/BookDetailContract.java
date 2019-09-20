@@ -7,10 +7,14 @@ import com.sendbird.mylibrary.data.Book;
 public interface BookDetailContract {
 
     interface View extends BaseView<Presenter> {
+
         void showBookDetail(Book book);
+
+        void showBookmark(boolean isBookmark);
+
     }
 
     interface Presenter extends BasePresenter {
-
+        void bookmarkBook();
     }
 }

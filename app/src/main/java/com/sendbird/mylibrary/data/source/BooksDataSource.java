@@ -26,6 +26,10 @@ public interface BooksDataSource {
 
     void getBook(@NonNull String bookId, @NonNull GetBookCallback callback);
 
+    void addBookmark(@NonNull Book book);
+
+    void removeBookmark(@NonNull Book book);
+
     void saveBook(@NonNull Book book);
 
     void refreshBooks();

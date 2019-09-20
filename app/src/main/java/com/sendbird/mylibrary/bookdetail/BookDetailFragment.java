@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 
@@ -40,6 +41,8 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
     private TextView mYear;
     private TextView mRating;
     private TextView mDesc;
+
+    private FloatingActionButton mBookmark;
 
     public static BookDetailFragment newInstance(@Nullable String bookId) {
         Bundle arguments = new Bundle();
@@ -76,6 +79,17 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mRating = root.findViewById(R.id.rating_text);
         mDesc = root.findViewById(R.id.desc_text);
 
+        // Set up floating action button
+        mBookmark = root.findViewById(R.id.fab_bookmark);
+
+        mBookmark.setImageResource(R.drawable.ic_star_disabled);
+        mBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.bookmarkBook();
+            }
+        });
+
         return root;
     }
 
@@ -102,5 +116,14 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mYear.setText(book.getYear());
         mRating.setText(book.getRating());
         mDesc.setText(book.getDesc());
+    }
+
+    @Override
+    public void showBookmark(boolean isBookmark) {
+        if (isBookmark) {
+            mBookmark.setImageResource(R.drawable.ic_star_enabled);
+        } else {
+            mBookmark.setImageResource(R.drawable.ic_star_disabled);
+        }
     }
 }
