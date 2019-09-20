@@ -71,7 +71,7 @@ public class BooksLocalDataSource implements BooksDataSource {
                 mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (book != null) {
+                        if (book != null && book.getIsbn10() != null) {
                             callback.onBookLoaded(book);
                         } else {
                             callback.onDataNotAvailable();
@@ -82,6 +82,30 @@ public class BooksLocalDataSource implements BooksDataSource {
         };
 
         mAppExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void addBookmark(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateBookmark(book.getId(), true);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
+    public void removeBookmark(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateBookmark(book.getId(), false);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
     }
 
     @Override

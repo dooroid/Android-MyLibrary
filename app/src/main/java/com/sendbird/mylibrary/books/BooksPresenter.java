@@ -30,6 +30,7 @@ public class BooksPresenter implements BooksContract.Presenter {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 System.out.println(books.get(0).getPrice());
+                mBooksView.showBooks(books);
             }
 
             @Override
@@ -37,5 +38,11 @@ public class BooksPresenter implements BooksContract.Presenter {
                 System.out.println("onDataNotAvailable");
             }
         });
+    }
+
+    @Override
+    public void openBookDetails(@NonNull Book requestedBook) {
+        checkNotNull(requestedBook, "requestedBook cannot be null!");
+        mBooksView.showBookDetailsUi(requestedBook.getId());
     }
 }

@@ -82,7 +82,7 @@ public class BooksRepository implements BooksDataSource {
         Book cachedBook = getBookWithId(bookId);
 
         // Respond immediately with cache if available
-        if (cachedBook != null) {
+        if (cachedBook != null && cachedBook.getIsbn10() != null) {
             callback.onBookLoaded(cachedBook);
             return;
         }
@@ -111,6 +111,7 @@ public class BooksRepository implements BooksDataSource {
                             mCachedBooks = new LinkedHashMap<>();
                         }
                         mCachedBooks.put(book.getId(), book);
+                        mBooksLocalDataSource.saveBook(book);
                         callback.onBookLoaded(book);
                     }
 
@@ -121,6 +122,64 @@ public class BooksRepository implements BooksDataSource {
                 });
             }
         });
+    }
+
+    @Override
+    public void addBookmark(@NonNull Book book) {
+        checkNotNull(book);
+        mBooksRemoteDataSource.addBookmark(book);
+        mBooksLocalDataSource.addBookmark(book);
+
+        Book updatedBook = new Book(book.getTitle(),
+                book.getSubtitle(),
+                book.getId(),
+                book.getPrice(),
+                book.getImage(),
+                book.getUrl(),
+                book.getAuthors(),
+                book.getPublisher(),
+                book.getLanguage(),
+                book.getIsbn10(),
+                book.getPages(),
+                book.getYear(),
+                book.getRating(),
+                book.getDesc(),
+                true);
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+        mCachedBooks.put(book.getId(), updatedBook);
+    }
+
+    @Override
+    public void removeBookmark(@NonNull Book book) {
+        checkNotNull(book);
+        mBooksRemoteDataSource.removeBookmark(book);
+        mBooksLocalDataSource.removeBookmark(book);
+
+        Book updatedBook = new Book(book.getTitle(),
+                                    book.getSubtitle(),
+                                    book.getId(),
+                                    book.getPrice(),
+                                    book.getImage(),
+                                    book.getUrl(),
+                                    book.getAuthors(),
+                                    book.getPublisher(),
+                                    book.getLanguage(),
+                                    book.getIsbn10(),
+                                    book.getPages(),
+                                    book.getYear(),
+                                    book.getRating(),
+                                    book.getDesc(),
+                                    false);
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+        mCachedBooks.put(book.getId(), updatedBook);
     }
 
     @Override

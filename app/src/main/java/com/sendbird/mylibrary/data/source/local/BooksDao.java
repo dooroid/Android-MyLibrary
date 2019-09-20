@@ -42,6 +42,9 @@ public interface BooksDao {
     @Update
     int updateBook(Book book);
 
+    @Query("UPDATE books SET bookmark = :bookmark WHERE id = :bookId")
+    void updateBookmark(String bookId, boolean bookmark);
+
 //    @Query("UPDATE books SET completed = :completed WHERE entryid = :bookId")
 //    void updateCompleted(String bookId, boolean completed);
 
