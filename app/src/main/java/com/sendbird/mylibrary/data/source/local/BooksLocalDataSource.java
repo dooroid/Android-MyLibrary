@@ -109,6 +109,11 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
+    public void searchBooks(@NonNull String query, @NonNull LoadBooksCallback callback) {
+
+    }
+
+    @Override
     public void saveBook(@NonNull final Book book) {
         checkNotNull(book);
         Runnable saveRunnable = new Runnable() {

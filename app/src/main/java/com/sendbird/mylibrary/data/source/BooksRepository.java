@@ -183,6 +183,21 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
+    public void searchBooks(@NonNull String query, @NonNull final LoadBooksCallback callback) {
+        mBooksRemoteDataSource.searchBooks(query, new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Override
     public void saveBook(@NonNull Book book) {
         checkNotNull(book);
         mBooksRemoteDataSource.saveBook(book);
