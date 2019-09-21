@@ -1,21 +1,21 @@
 package com.sendbird.mylibrary.data;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.UUID;
 
 /**
  * Immutable model class for a Task.
  */
 @Entity(tableName = "books")
-public final class Book {
+public final class Book implements Comparable<Book> {
 
     @Nullable
     @ColumnInfo(name = "title")
@@ -92,6 +92,9 @@ public final class Book {
     @ColumnInfo(name = "bookmark")
     private final boolean mBookmark;
 
+    @ColumnInfo(name = "history")
+    private final long mHistory;
+
     public Book(@Nullable String title,
                 @Nullable String subtitle,
                 @NonNull String id,
@@ -106,7 +109,8 @@ public final class Book {
                 @Nullable String year,
                 @Nullable String rating,
                 @Nullable String desc,
-                boolean bookmark) {
+                boolean bookmark,
+                long history) {
 
         this.mTitle = title;
         this.mSubtitle = subtitle;
@@ -123,6 +127,7 @@ public final class Book {
         this.mRating = rating;
         this.mDesc = desc;
         this.mBookmark = bookmark;
+        this.mHistory = history;
     }
 
     @Nullable
@@ -199,91 +204,16 @@ public final class Book {
         return mBookmark;
     }
 
-//    /**
-//     * Use this constructor to create a new active Task.
-//     *
-//     * @param title       title of the task
-//     * @param description description of the task
-//     */
-//    @Ignore
-//    public Book(@Nullable String title, @Nullable String description) {
-//        this(title, description, UUID.randomUUID().toString(), false);
-//    }
-//
-//    /**
-//     * Use this constructor to create an active Task if the Task already has an id (copy of another
-//     * Task).
-//     *
-//     * @param title       title of the task
-//     * @param description description of the task
-//     * @param id          id of the task
-//     */
-//    @Ignore
-//    public Book(@Nullable String title, @Nullable String description, @NonNull String id) {
-//        this(title, description, id, false);
-//    }
-//
-//    /**
-//     * Use this constructor to create a new completed Task.
-//     *
-//     * @param title       title of the task
-//     * @param description description of the task
-//     * @param completed   true if the task is completed, false if it's active
-//     */
-//    @Ignore
-//    public Book(@Nullable String title, @Nullable String description, boolean completed) {
-//        this(title, description, UUID.randomUUID().toString(), completed);
-//    }
-//
-//    /**
-//     * Use this constructor to specify a completed Task if the Task already has an id (copy of
-//     * another Task).
-//     *
-//     * @param title       title of the task
-//     * @param description description of the task
-//     * @param id          id of the task
-//     * @param completed   true if the task is completed, false if it's active
-//     */
-//    public Book(@Nullable String title, @Nullable String description,
-//                @NonNull String id, boolean completed) {
-//        mId = id;
-//        mTitle = title;
-//        mDescription = description;
-//        mCompleted = completed;
-//    }
-//
-//    @NonNull
-//    public String getId() {
-//        return mId;
-//    }
-//
-//    @Nullable
-//    public String getTitle() {
-//        return mTitle;
-//    }
-//
-//    @Nullable
-//    public String getTitleForList() {
-//        if (!Strings.isNullOrEmpty(mTitle)) {
-//            return mTitle;
-//        } else {
-//            return mDescription;
-//        }
-//    }
-//
-//    @Nullable
-//    public String getDescription() {
-//        return mDescription;
-//    }
-//
-//    public boolean isCompleted() {
-//        return mCompleted;
-//    }
-//
-//    public boolean isActive() {
-//        return !mCompleted;
-//    }
-//
+    public long getHistory() {
+        return mHistory;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    public int compareTo(@NonNull Book book) {
+        return Long.compare(book.getHistory(), this.mHistory);
+    }
+
 //    public boolean isEmpty() {
 //        return Strings.isNullOrEmpty(mTitle) &&
 //                Strings.isNullOrEmpty(mDescription);

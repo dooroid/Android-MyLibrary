@@ -57,7 +57,7 @@ public class LibraryPagerAdapter extends FragmentPagerAdapter {
 
             case HISTORY :
                 fragment = HistoryFragment.newInstance();
-                new HistoryPresenter((HistoryFragment) fragment);
+                new HistoryPresenter(booksRepository, (HistoryFragment) fragment);
                 break;
 
             default:

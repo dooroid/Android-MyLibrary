@@ -98,6 +98,21 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
+    public void getHistory(@NonNull LoadBooksCallback callback) {
+
+    }
+
+    @Override
+    public void addHistory(@NonNull Book book) {
+
+    }
+
+    @Override
+    public void removeHistory(@NonNull Book book) {
+
+    }
+
+    @Override
     public void searchBooks(@NonNull final String query, @NonNull final LoadBooksCallback callback) {
         BookService service = mRetrofit.create(BookService.class);
         Call<ResponseBody> call = service.searchBooks(query);

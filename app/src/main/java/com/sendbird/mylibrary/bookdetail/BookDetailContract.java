@@ -16,5 +16,7 @@ public interface BookDetailContract {
 
     interface Presenter extends BasePresenter {
         void bookmarkBook();
+
+        void addHistory();
     }
 }

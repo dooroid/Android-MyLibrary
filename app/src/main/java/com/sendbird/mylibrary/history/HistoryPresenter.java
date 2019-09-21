@@ -2,7 +2,11 @@ package com.sendbird.mylibrary.history;
 
 import androidx.annotation.NonNull;
 
+import com.sendbird.mylibrary.data.Book;
+import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.data.source.BooksRepository;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,6 +25,16 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void start() {
-        mBooksRepository.getHistory();
+        mBooksRepository.getHistory(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mHistoryView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
     }
 }
