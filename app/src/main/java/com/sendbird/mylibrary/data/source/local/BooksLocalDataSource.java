@@ -109,6 +109,30 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
+    public void getBookmark(@NonNull final LoadBooksCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Book> books = mBooksDao.getBookmark(true);
+
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (books.isEmpty()) {
+                            // This will be called if the table is new or just empty.
+                            callback.onDataNotAvailable();
+                        } else {
+                            callback.onBooksLoaded(books);
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
     public void searchBooks(@NonNull String query, @NonNull LoadBooksCallback callback) {
 
     }

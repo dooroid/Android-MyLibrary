@@ -52,7 +52,7 @@ public class LibraryPagerAdapter extends FragmentPagerAdapter {
 
             case BOOKMARK :
                 fragment = BookmarkFragment.newInstance();
-                new BookmarkPresenter((BookmarkFragment) fragment);
+                new BookmarkPresenter(booksRepository, (BookmarkFragment) fragment);
                 break;
 
             case HISTORY :

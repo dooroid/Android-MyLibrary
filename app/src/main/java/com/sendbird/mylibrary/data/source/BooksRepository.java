@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.sendbird.mylibrary.data.Book;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -120,6 +121,23 @@ public class BooksRepository implements BooksDataSource {
                         callback.onDataNotAvailable();
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public void getBookmark(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
             }
         });
     }

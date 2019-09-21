@@ -36,6 +36,9 @@ public interface BooksDao {
     @Query("SELECT * FROM Books WHERE id = :bookId")
     Book getBookById(String bookId);
 
+    @Query("SELECT * FROM Books WHERE bookmark = :bookmark")
+    List<Book> getBookmark(boolean bookmark);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertBook(Book book);
 

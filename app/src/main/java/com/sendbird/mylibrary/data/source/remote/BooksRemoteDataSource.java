@@ -83,6 +83,11 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
+    public void getBookmark(@NonNull LoadBooksCallback callback) {
+
+    }
+
+    @Override
     public void addBookmark(@NonNull Book book) {
 
     }
