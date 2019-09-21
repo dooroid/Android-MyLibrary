@@ -116,6 +116,8 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mYear.setText(book.getYear());
         mRating.setText(book.getRating());
         mDesc.setText(book.getDesc());
+
+        mPresenter.addHistory();
     }
 
     @Override

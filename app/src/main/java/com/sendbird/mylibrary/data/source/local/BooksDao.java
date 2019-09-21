@@ -36,6 +36,12 @@ public interface BooksDao {
     @Query("SELECT * FROM Books WHERE id = :bookId")
     Book getBookById(String bookId);
 
+    @Query("SELECT * FROM Books WHERE bookmark = :bookmark")
+    List<Book> getBookmark(boolean bookmark);
+
+    @Query("SELECT * FROM Books WHERE history != '0'")
+    List<Book> getHistory();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertBook(Book book);
 
@@ -44,6 +50,9 @@ public interface BooksDao {
 
     @Query("UPDATE books SET bookmark = :bookmark WHERE id = :bookId")
     void updateBookmark(String bookId, boolean bookmark);
+
+    @Query("UPDATE books SET history = :current WHERE id = :bookId")
+    void updateHistory(String bookId, long current);
 
 //    @Query("UPDATE books SET completed = :completed WHERE entryid = :bookId")
 //    void updateCompleted(String bookId, boolean completed);

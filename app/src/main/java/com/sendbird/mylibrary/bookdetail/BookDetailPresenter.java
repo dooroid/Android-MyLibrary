@@ -63,4 +63,11 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
         openBook();
     }
+
+    @Override
+    public void addHistory() {
+        if (mBook != null) {
+            mBooksRepository.addHistory(mBook);
+        }
+    }
 }

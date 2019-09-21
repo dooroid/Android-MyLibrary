@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import com.sendbird.mylibrary.data.Book;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,6 +127,23 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
+    public void getBookmark(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Override
     public void addBookmark(@NonNull Book book) {
         checkNotNull(book);
         mBooksRemoteDataSource.addBookmark(book);
@@ -144,7 +163,8 @@ public class BooksRepository implements BooksDataSource {
                 book.getYear(),
                 book.getRating(),
                 book.getDesc(),
-                true);
+                true,
+                book.getHistory());
 
         // Do in memory cache update to keep the app UI up to date
         if (mCachedBooks == null) {
@@ -173,13 +193,107 @@ public class BooksRepository implements BooksDataSource {
                                     book.getYear(),
                                     book.getRating(),
                                     book.getDesc(),
-                                    false);
+                                    false,
+                                    book.getHistory());
 
         // Do in memory cache update to keep the app UI up to date
         if (mCachedBooks == null) {
             mCachedBooks = new LinkedHashMap<>();
         }
         mCachedBooks.put(book.getId(), updatedBook);
+    }
+
+    @Override
+    public void getHistory(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getHistory(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books);
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Override
+    public void addHistory(@NonNull Book book) {
+        checkNotNull(book);
+        mBooksRemoteDataSource.addHistory(book);
+        mBooksLocalDataSource.addHistory(book);
+
+        Book updatedBook = new Book(book.getTitle(),
+                book.getSubtitle(),
+                book.getId(),
+                book.getPrice(),
+                book.getImage(),
+                book.getUrl(),
+                book.getAuthors(),
+                book.getPublisher(),
+                book.getLanguage(),
+                book.getIsbn10(),
+                book.getPages(),
+                book.getYear(),
+                book.getRating(),
+                book.getDesc(),
+                book.isBookmark(),
+                System.currentTimeMillis());
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+        mCachedBooks.put(book.getId(), updatedBook);
+    }
+
+    @Override
+    public void removeHistory(@NonNull Book book) {
+        checkNotNull(book);
+        mBooksRemoteDataSource.removeHistory(book);
+        mBooksLocalDataSource.removeHistory(book);
+
+        Book updatedBook = new Book(book.getTitle(),
+                book.getSubtitle(),
+                book.getId(),
+                book.getPrice(),
+                book.getImage(),
+                book.getUrl(),
+                book.getAuthors(),
+                book.getPublisher(),
+                book.getLanguage(),
+                book.getIsbn10(),
+                book.getPages(),
+                book.getYear(),
+                book.getRating(),
+                book.getDesc(),
+                book.isBookmark(),
+                0L);
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+        mCachedBooks.put(book.getId(), updatedBook);
+    }
+
+    @Override
+    public void searchBooks(@NonNull String query, @NonNull final LoadBooksCallback callback) {
+        mBooksRemoteDataSource.searchBooks(query, new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override

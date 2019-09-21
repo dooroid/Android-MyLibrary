@@ -7,6 +7,7 @@ import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.util.AppExecutors;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -85,6 +86,30 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
+    public void getBookmark(@NonNull final LoadBooksCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Book> books = mBooksDao.getBookmark(true);
+
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (books.isEmpty()) {
+                            // This will be called if the table is new or just empty.
+                            callback.onDataNotAvailable();
+                        } else {
+                            callback.onBooksLoaded(books);
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
     public void addBookmark(@NonNull final Book book) {
         Runnable bookmarkRunnable = new Runnable() {
             @Override
@@ -106,6 +131,59 @@ public class BooksLocalDataSource implements BooksDataSource {
         };
 
         mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
+    public void getHistory(@NonNull final LoadBooksCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Book> books = mBooksDao.getHistory();
+
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (books.isEmpty()) {
+                            // This will be called if the table is new or just empty.
+                            callback.onDataNotAvailable();
+                        } else {
+                            callback.onBooksLoaded(books);
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void addHistory(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateHistory(book.getId(), System.currentTimeMillis());
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
+    public void removeHistory(@NonNull final Book book) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateHistory(book.getId(), 0L);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
+    }
+
+    @Override
+    public void searchBooks(@NonNull String query, @NonNull LoadBooksCallback callback) {
+
     }
 
     @Override

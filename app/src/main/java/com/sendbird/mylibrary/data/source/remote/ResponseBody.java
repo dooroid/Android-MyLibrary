@@ -6,13 +6,9 @@ import java.util.List;
 
 public class ResponseBody {
 
-    String error;
-    String total;
+    int error;
+    int total;
+    int page;
 
     List<Book> books;
-
-    @Override
-    public String toString() {
-        return total;
-    }
 }

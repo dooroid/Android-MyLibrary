@@ -13,6 +13,7 @@ import com.sendbird.mylibrary.bookmark.BookmarkFragment;
 import com.sendbird.mylibrary.bookmark.BookmarkPresenter;
 import com.sendbird.mylibrary.books.BooksFragment;
 import com.sendbird.mylibrary.books.BooksPresenter;
+import com.sendbird.mylibrary.data.source.BooksRepository;
 import com.sendbird.mylibrary.history.HistoryFragment;
 import com.sendbird.mylibrary.history.HistoryPresenter;
 import com.sendbird.mylibrary.search.SearchFragment;
@@ -40,26 +41,28 @@ public class LibraryPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment;
+        BooksRepository booksRepository =
+                Injection.provideBooksRepository(mContext.getApplicationContext());
 
         switch (position) {
             case SEARCH :
                 fragment = SearchFragment.newInstance();
-                new SearchPresenter((SearchFragment) fragment);
+                new SearchPresenter(booksRepository, (SearchFragment) fragment);
                 break;
 
             case BOOKMARK :
                 fragment = BookmarkFragment.newInstance();
-                new BookmarkPresenter((BookmarkFragment) fragment);
+                new BookmarkPresenter(booksRepository, (BookmarkFragment) fragment);
                 break;
 
             case HISTORY :
                 fragment = HistoryFragment.newInstance();
-                new HistoryPresenter((HistoryFragment) fragment);
+                new HistoryPresenter(booksRepository, (HistoryFragment) fragment);
                 break;
 
             default:
                 fragment = BooksFragment.newInstance();
-                new BooksPresenter(Injection.provideBooksRepository(mContext.getApplicationContext()), (BooksFragment) fragment);
+                new BooksPresenter(booksRepository, (BooksFragment) fragment);
         }
 
         return fragment;
