@@ -27,7 +27,7 @@ public class SimpleBooksViewHolder extends RecyclerView.ViewHolder {
         mTitle = v.findViewById(R.id.title_text);
         mSubtitle = v.findViewById(R.id.subtitle_text);
         mPrice = v.findViewById(R.id.price_text);
-        mUrl = v.findViewById(R.id.url_text);
+        mUrl = v.findViewById(R.id.url_value);
         mIsbn13 = v.findViewById(R.id.isbn13_text);
     }
 
