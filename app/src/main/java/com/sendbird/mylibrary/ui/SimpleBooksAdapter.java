@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.mylibrary.R;
@@ -38,7 +37,7 @@ public class SimpleBooksAdapter extends RecyclerView.Adapter<SimpleBooksViewHold
     @Override
     public SimpleBooksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // create a new view
-        CardView v = (CardView) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.simple_books_holder, parent, false);
         SimpleBooksViewHolder vh = new SimpleBooksViewHolder(v);
         return vh;

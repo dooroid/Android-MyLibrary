@@ -1,11 +1,12 @@
 package com.sendbird.mylibrary.search;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.BookItemListener;
+import com.sendbird.mylibrary.ui.MarginItemDecoration;
 import com.sendbird.mylibrary.ui.SimpleBooksAdapter;
 
 import java.util.ArrayList;
@@ -28,8 +30,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private SearchContract.Presenter mPresenter;
 
     private SimpleBooksAdapter mAdapter;
-
-    private EditText mSearchBox;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -60,15 +60,17 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         RecyclerView recyclerView = root.findViewById(R.id.result_recycler_view);
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.addItemDecoration(new MarginItemDecoration((int) getContext().getResources()
+                                                        .getDimension(R.dimen.list_item_padding)));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
 
-        mSearchBox = root.findViewById(R.id.edit_query);
-        ImageButton button = root.findViewById(R.id.image_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        EditText searchBox = root.findViewById(R.id.edit_query);
+        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                mPresenter.searchBooks(mSearchBox.getText().toString());
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                mPresenter.searchBooks(textView.getText().toString());
+                return true;
             }
         });
 

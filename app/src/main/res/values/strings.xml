@@ -6,4 +6,16 @@
     <string name="tab_bookmark">Bookmark</string>
     <string name="tab_history">History</string>
 
+    <string name="price_key">Price</string>
+    <string name="isbn13_key">ISBN13</string>
+    <string name="url_key">URL</string>
+    <string name="authors_key">Authors</string>
+    <string name="publisher_key">Publisher</string>
+    <string name="language_key">Language</string>
+    <string name="isbn10_key">ISBN10</string>
+    <string name="pages_key">Pages</string>
+    <string name="year_key">Year</string>
+    <string name="rating_key">Rating</string>
+    <string name="colon"> : </string>
+
 </resources>

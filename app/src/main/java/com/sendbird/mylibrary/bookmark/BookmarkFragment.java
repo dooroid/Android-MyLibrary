@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.DetailBooksAdapter;
+import com.sendbird.mylibrary.ui.MarginItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class BookmarkFragment extends Fragment implements BookmarkContract.View 
         RecyclerView recyclerView = root.findViewById(R.id.bookmark_recycler_view);
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.addItemDecoration(new MarginItemDecoration((int) getContext().getResources()
+                                                        .getDimension(R.dimen.list_item_padding)));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
 

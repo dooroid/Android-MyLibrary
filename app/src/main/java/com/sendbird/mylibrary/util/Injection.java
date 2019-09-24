@@ -1,4 +1,4 @@
-package com.sendbird.mylibrary;
+package com.sendbird.mylibrary.util;
 
 import android.content.Context;
 
