@@ -8,12 +8,12 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/list_item_padding"
     android:elevation="@dimen/list_elevation"
-    app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="@dimen/list_radius">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
