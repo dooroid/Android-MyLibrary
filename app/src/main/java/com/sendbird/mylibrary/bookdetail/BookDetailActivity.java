@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.sendbird.mylibrary.Injection;
+import com.sendbird.mylibrary.util.Injection;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.util.ActivityUtils;
 
