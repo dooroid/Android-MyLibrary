@@ -5,9 +5,9 @@
 
     <dimen name="list_item_padding">8dp</dimen>
     <dimen name="list_item_padding_small">1dp</dimen>
-
+    <dimen name="list_elevation">200dp</dimen>
+    <dimen name="list_radius">10dp</dimen>
     <dimen name="list_img_height">200dp</dimen>
-
     <dimen name="list_titles_width">70dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>

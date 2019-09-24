@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.DetailBooksAdapter;
+import com.sendbird.mylibrary.ui.MarginItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         RecyclerView recyclerView = root.findViewById(R.id.history_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new MarginItemDecoration((int) getContext().getResources()
+                                                        .getDimension(R.dimen.list_item_padding)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
 
         return root;

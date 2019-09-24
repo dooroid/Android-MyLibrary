@@ -17,6 +17,7 @@ import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.bookdetail.BookDetailActivity;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.BookItemListener;
+import com.sendbird.mylibrary.ui.MarginItemDecoration;
 import com.sendbird.mylibrary.ui.SimpleBooksAdapter;
 
 import java.util.ArrayList;
@@ -60,11 +61,9 @@ public class BooksFragment extends Fragment implements BooksContract.View {
         RecyclerView recyclerView = root.findViewById(R.id.books_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new MarginItemDecoration((int) getContext().getResources()
+                                                        .getDimension(R.dimen.list_item_padding)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
 
         return root;
