@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -12,7 +11,7 @@ import com.sendbird.mylibrary.R;
 
 public class SimpleBooksViewHolder extends RecyclerView.ViewHolder {
 
-    private CardView mView;
+    private View mView;
     private ImageView mImage;
     private TextView mTitle;
     private TextView mSubtitle;
@@ -20,14 +19,14 @@ public class SimpleBooksViewHolder extends RecyclerView.ViewHolder {
     private TextView mUrl;
     private TextView mIsbn13;
 
-    public SimpleBooksViewHolder(CardView v) {
+    public SimpleBooksViewHolder(View v) {
         super(v);
         mView = v;
         mImage = v.findViewById(R.id.book_image);
         mTitle = v.findViewById(R.id.title_text);
         mSubtitle = v.findViewById(R.id.subtitle_text);
         mPrice = v.findViewById(R.id.price_text);
-        mUrl = v.findViewById(R.id.url_value);
+        mUrl = v.findViewById(R.id.url_text);
         mIsbn13 = v.findViewById(R.id.isbn13_text);
     }
 
