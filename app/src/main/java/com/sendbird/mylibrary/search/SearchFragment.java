@@ -1,15 +1,19 @@
 package com.sendbird.mylibrary.search;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,15 +64,19 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         RecyclerView recyclerView = root.findViewById(R.id.result_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
-        mSearchBox = root.findViewById(R.id.edit_query);
-        ImageButton button = root.findViewById(R.id.image_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        EditText searchBox = root.findViewById(R.id.edit_query);
+        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                mPresenter.searchBooks(mSearchBox.getText().toString());
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                mPresenter.searchBooks(textView.getText().toString());
+                return true;
             }
         });
 
