@@ -5,15 +5,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,8 +30,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private SearchContract.Presenter mPresenter;
 
     private SimpleBooksAdapter mAdapter;
-
-    private EditText mSearchBox;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
