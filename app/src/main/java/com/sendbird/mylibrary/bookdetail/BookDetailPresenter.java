@@ -16,8 +16,6 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     @NonNull
     private String mBookId;
 
-    private Book mBook;
-
     public BookDetailPresenter(@NonNull String bookId, @NonNull BooksRepository booksRepository, @NonNull BookDetailContract.View bookDetailView) {
 
         mBookId = bookId;
@@ -37,9 +35,9 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
         mBooksRepository.getBook(mBookId, new BooksDataSource.GetBookCallback() {
             @Override
             public void onBookLoaded(Book book) {
-                mBook = book;
-                mBookDetailView.showBookDetail(mBook);
-                mBookDetailView.showBookmark(mBook.isBookmark());
+                mBookDetailView.showBookDetail(book);
+                mBookDetailView.showBookmark(book.isBookmark());
+                mBookDetailView.showMemo(book.getMemo());
             }
 
             @Override
@@ -50,25 +48,20 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     }
 
     @Override
-    public void bookmarkBook() {
-        if (mBook == null) {
-            return;
-        }
+    public void removeBookmark() {
+        mBooksRepository.removeBookmark(mBookId);
+        mBookDetailView.showBookmark(false);
+    }
 
-        if (mBook.isBookmark()) {
-            mBooksRepository.removeBookmark(mBook);
-        } else {
-            mBooksRepository.addBookmark(mBook);
-        }
-
-        openBook();
+    @Override
+    public void addBookmark() {
+        mBooksRepository.addBookmark(mBookId);
+        mBookDetailView.showBookmark(true);
     }
 
     @Override
     public void addHistory() {
-        if (mBook != null) {
-            mBooksRepository.addHistory(mBook);
-        }
+        mBooksRepository.addHistory(mBookId);
     }
 
     @Override

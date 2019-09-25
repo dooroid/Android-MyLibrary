@@ -88,12 +88,12 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addBookmark(@NonNull Book book) {
+    public void addBookmark(@NonNull String bookId) {
 
     }
 
     @Override
-    public void removeBookmark(@NonNull Book book) {
+    public void removeBookmark(@NonNull String bookId) {
 
     }
 
@@ -103,12 +103,12 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addHistory(@NonNull Book book) {
+    public void addHistory(@NonNull String bookId) {
 
     }
 
     @Override
-    public void removeHistory(@NonNull Book book) {
+    public void removeHistory(@NonNull String bookId) {
 
     }
 

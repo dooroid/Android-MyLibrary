@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -99,6 +100,16 @@ public final class Book implements Comparable<Book> {
     @ColumnInfo(name = "memo")
     private String mMemo;
 
+    @Ignore
+    public Book(@Nullable String title,
+                @NonNull String id,
+                boolean bookmark,
+                long history) {
+        this(title, "", id, "", "", "", "",
+                "", "", "", "", "", "",
+                "", bookmark, history, "");
+    }
+
     public Book(@Nullable String title,
                 @Nullable String subtitle,
                 @NonNull String id,
@@ -114,7 +125,8 @@ public final class Book implements Comparable<Book> {
                 @Nullable String rating,
                 @Nullable String desc,
                 boolean bookmark,
-                long history) {
+                long history,
+                @Nullable String memo) {
 
         this.mTitle = title;
         this.mSubtitle = subtitle;
@@ -132,6 +144,7 @@ public final class Book implements Comparable<Book> {
         this.mDesc = desc;
         this.mBookmark = bookmark;
         this.mHistory = history;
+        this.mMemo = memo;
     }
 
     @Nullable

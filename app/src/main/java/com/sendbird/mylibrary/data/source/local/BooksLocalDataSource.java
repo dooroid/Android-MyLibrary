@@ -110,11 +110,11 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addBookmark(@NonNull final Book book) {
+    public void addBookmark(@NonNull final String bookId) {
         Runnable bookmarkRunnable = new Runnable() {
             @Override
             public void run() {
-                mBooksDao.updateBookmark(book.getId(), true);
+                mBooksDao.updateBookmark(bookId, true);
             }
         };
 
@@ -122,11 +122,11 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
-    public void removeBookmark(@NonNull final Book book) {
+    public void removeBookmark(@NonNull final String bookId) {
         Runnable bookmarkRunnable = new Runnable() {
             @Override
             public void run() {
-                mBooksDao.updateBookmark(book.getId(), false);
+                mBooksDao.updateBookmark(bookId, false);
             }
         };
 
@@ -158,11 +158,11 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addHistory(@NonNull final Book book) {
+    public void addHistory(@NonNull final String bookId) {
         Runnable bookmarkRunnable = new Runnable() {
             @Override
             public void run() {
-                mBooksDao.updateHistory(book.getId(), System.currentTimeMillis());
+                mBooksDao.updateHistory(bookId, System.currentTimeMillis());
             }
         };
 
@@ -170,11 +170,11 @@ public class BooksLocalDataSource implements BooksDataSource {
     }
 
     @Override
-    public void removeHistory(@NonNull final Book book) {
+    public void removeHistory(@NonNull final String bookId) {
         Runnable bookmarkRunnable = new Runnable() {
             @Override
             public void run() {
-                mBooksDao.updateHistory(book.getId(), 0L);
+                mBooksDao.updateHistory(bookId, 0L);
             }
         };
 

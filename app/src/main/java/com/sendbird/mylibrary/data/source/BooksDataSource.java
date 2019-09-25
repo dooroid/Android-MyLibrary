@@ -29,15 +29,15 @@ public interface BooksDataSource {
 
     void getBookmark(@NonNull LoadBooksCallback callback);
 
-    void addBookmark(@NonNull Book book);
+    void addBookmark(@NonNull String bookId);
 
-    void removeBookmark(@NonNull Book book);
+    void removeBookmark(@NonNull String bookId);
 
     void getHistory(@NonNull LoadBooksCallback callback);
 
-    void addHistory(@NonNull Book book);
+    void addHistory(@NonNull String bookId);
 
-    void removeHistory(@NonNull Book book);
+    void removeHistory(@NonNull String bookId);
 
     void searchBooks(@NonNull String query, @NonNull LoadBooksCallback callback);
 

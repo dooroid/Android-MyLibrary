@@ -48,6 +48,7 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
     private TextView mMemoView;
 
     private FloatingActionButton mBookmark;
+    private boolean mIsBookmark;
 
     public static BookDetailFragment newInstance(@Nullable String bookId) {
         Bundle arguments = new Bundle();
@@ -92,7 +93,11 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.bookmarkBook();
+                if (mIsBookmark) {
+                    mPresenter.removeBookmark();
+                } else {
+                    mPresenter.addBookmark();
+                }
             }
         });
 
@@ -153,14 +158,14 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mYear.setText(book.getYear());
         mRating.setText(book.getRating());
         mDesc.setText(book.getDesc());
-        showMemo(book.getMemo());
 
         mPresenter.addHistory();
     }
 
     @Override
     public void showBookmark(boolean isBookmark) {
-        if (isBookmark) {
+        mIsBookmark = isBookmark;
+        if (mIsBookmark) {
             mBookmark.setImageResource(R.drawable.ic_star_enabled);
         } else {
             mBookmark.setImageResource(R.drawable.ic_star_disabled);

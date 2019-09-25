@@ -235,63 +235,19 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
-    public void addBookmark(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.addBookmark(book);
-        mBooksLocalDataSource.addBookmark(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                true,
-                book.getHistory());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void addBookmark(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.addBookmark(bookId);
+        mBooksLocalDataSource.addBookmark(bookId);
+        refreshCache(bookId);
     }
 
     @Override
-    public void removeBookmark(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.removeBookmark(book);
-        mBooksLocalDataSource.removeBookmark(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                                    book.getSubtitle(),
-                                    book.getId(),
-                                    book.getPrice(),
-                                    book.getImage(),
-                                    book.getUrl(),
-                                    book.getAuthors(),
-                                    book.getPublisher(),
-                                    book.getLanguage(),
-                                    book.getIsbn10(),
-                                    book.getPages(),
-                                    book.getYear(),
-                                    book.getRating(),
-                                    book.getDesc(),
-                                    false,
-                                    book.getHistory());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void removeBookmark(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.removeBookmark(bookId);
+        mBooksLocalDataSource.removeBookmark(bookId);
+        refreshCache(bookId);
     }
 
     @Override
@@ -313,63 +269,19 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
-    public void addHistory(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.addHistory(book);
-        mBooksLocalDataSource.addHistory(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                book.isBookmark(),
-                System.currentTimeMillis());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void addHistory(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.addHistory(bookId);
+        mBooksLocalDataSource.addHistory(bookId);
+        refreshCache(bookId);
     }
 
     @Override
-    public void removeHistory(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.removeHistory(book);
-        mBooksLocalDataSource.removeHistory(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                book.isBookmark(),
-                0L);
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void removeHistory(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.removeHistory(bookId);
+        mBooksLocalDataSource.removeHistory(bookId);
+        refreshCache(bookId);
     }
 
     @Override
@@ -434,17 +346,7 @@ public class BooksRepository implements BooksDataSource {
     public void addMemo(@NonNull String bookId, @Nullable String memo) {
         checkNotNull(bookId);
         mBooksLocalDataSource.addMemo(bookId, memo);
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-
-        Book updatedBook = mCachedBooks.get(bookId);
-        if (updatedBook != null) {
-            updatedBook.setMemo(memo);
-            mCachedBooks.put(bookId, updatedBook);
-        }
+        refreshCache(bookId);
     }
 
     public List<String> getSearchHistory() {
@@ -491,6 +393,35 @@ public class BooksRepository implements BooksDataSource {
             mCachedBooks.put(book.getId(), book);
         }
         mCacheIsDirty = false;
+    }
+
+    private void refreshCache(final String bookId) {
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+
+        mBooksLocalDataSource.getBook(bookId, new GetBookCallback() {
+            @Override
+            public void onBookLoaded(Book book) {
+                mCachedBooks.put(book.getId(), book);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mBooksRemoteDataSource.getBook(bookId, new GetBookCallback() {
+                    @Override
+                    public void onBookLoaded(Book book) {
+                        mBooksLocalDataSource.saveBook(book);
+                        mCachedBooks.put(bookId, book);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        mCachedBooks.remove(bookId);
+                    }
+                });
+            }
+        });
     }
 
     private void refreshLocalDataSource(List<Book> books) {
