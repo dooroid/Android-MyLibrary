@@ -2,6 +2,9 @@ package com.sendbird.mylibrary.bookmark;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,6 +51,7 @@ public class BookmarkFragment extends Fragment implements BookmarkContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.bookmark_frag, container, false);
+        setHasOptionsMenu(true);
 
         RecyclerView recyclerView = root.findViewById(R.id.bookmark_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -61,9 +65,35 @@ public class BookmarkFragment extends Fragment implements BookmarkContract.View 
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.sort_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.title_sort :
+                mPresenter.sortByTitle();
+                return true;
+            case R.id.price_sort:
+                mPresenter.sortByPrice();
+                return true;
+            case R.id.authors_sort:
+                mPresenter.sortByAuthors();
+                return true;
+            case R.id.publisher_sort:
+                mPresenter.sortByPublisher();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

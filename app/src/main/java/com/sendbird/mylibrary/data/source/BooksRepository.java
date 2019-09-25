@@ -8,6 +8,7 @@ import com.sendbird.mylibrary.data.Book;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,6 +135,95 @@ public class BooksRepository implements BooksDataSource {
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books);
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkByTitleSort(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getTitle().compareTo(t1.getTitle());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkByPriceSort(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getPrice().compareTo(t1.getPrice());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkByAuthorsSort(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getAuthors().compareTo(t1.getAuthors());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkByPublisherSort(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getPublisher().compareTo(t1.getPublisher());
+                    }
+                });
                 callback.onBooksLoaded(books);
             }
 

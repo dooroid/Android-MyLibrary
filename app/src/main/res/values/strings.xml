@@ -16,11 +16,15 @@
     <string name="pages_key">Pages</string>
     <string name="year_key">Year</string>
     <string name="rating_key">Rating</string>
-    <string name="colon"> : </string>
 
     <string name="memo_title">Please Enter Memo</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCLE</string>
     <string name="remove">REMOVE</string>
+
+    <string name="title_sort">Sort by Title</string>
+    <string name="price_sort">Sort by Price</string>
+    <string name="authors_sort">Sort by Authors</string>
+    <string name="publisher_sort">Sort by Publisher</string>
 
 </resources>

@@ -16,7 +16,13 @@ public interface BookmarkContract {
 
     interface Presenter extends BasePresenter {
 
+        void sortByTitle();
 
+        void sortByPrice();
+
+        void sortByAuthors();
+
+        void sortByPublisher();
 
     }
 }

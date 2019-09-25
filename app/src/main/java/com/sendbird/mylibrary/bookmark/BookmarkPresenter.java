@@ -37,4 +37,64 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
              }
          });
     }
+
+    @Override
+    public void sortByTitle() {
+        mBooksRepository.getBookmarkByTitleSort(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByPrice() {
+        mBooksRepository.getBookmarkByPriceSort(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByAuthors() {
+        mBooksRepository.getBookmarkByAuthorsSort(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByPublisher() {
+        mBooksRepository.getBookmarkByPublisherSort(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
 }
