@@ -29,7 +29,6 @@ public class BooksPresenter implements BooksContract.Presenter {
         mBooksRepository.getBooks(new BooksDataSource.LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
-                System.out.println(books.get(0).getPrice());
                 mBooksView.showBooks(books);
             }
 
