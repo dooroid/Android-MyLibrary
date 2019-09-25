@@ -97,4 +97,9 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void removeBookmark(String bookId) {
+        mBooksRepository.removeBookmark(bookId);
+    }
 }

@@ -24,5 +24,7 @@ public interface BookmarkContract {
 
         void sortByPublisher();
 
+        void removeBookmark(String bookId);
+
     }
 }

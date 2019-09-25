@@ -22,6 +22,8 @@
     <string name="cancel">CANCLE</string>
     <string name="remove">REMOVE</string>
 
+    <string name="done">Done</string>
+    <string name="edit_list">Edit List</string>
     <string name="title_sort">Sort by Title</string>
     <string name="price_sort">Sort by Price</string>
     <string name="authors_sort">Sort by Authors</string>
