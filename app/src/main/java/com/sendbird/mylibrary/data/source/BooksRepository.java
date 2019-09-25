@@ -24,6 +24,8 @@ public class BooksRepository implements BooksDataSource {
 
     Map<String, Book> mCachedBooks;
 
+    Map<String, List<Book>> mSearcedBookCache;
+
     boolean mCacheIsDirty = false;
 
     // Prevent direct instantiation.
@@ -281,11 +283,17 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
-    public void searchBooks(@NonNull String query, @NonNull final LoadBooksCallback callback) {
+    public void searchBooks(@NonNull final String query, @NonNull final LoadBooksCallback callback) {
+        if (mSearcedBookCache != null && mSearcedBookCache.containsKey(query)) {
+            callback.onBooksLoaded(mSearcedBookCache.get(query));
+            return;
+        }
+
         mBooksRemoteDataSource.searchBooks(query, new LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 callback.onBooksLoaded(books);
+                addSearchCache(query, books);
             }
 
             @Override
@@ -347,6 +355,24 @@ public class BooksRepository implements BooksDataSource {
             updatedBook.setMemo(memo);
             mCachedBooks.put(bookId, updatedBook);
         }
+    }
+
+    public List<String> getSearchHistory() {
+        if (mSearcedBookCache != null && mSearcedBookCache.keySet().size() != 0) {
+            return new ArrayList<>(mSearcedBookCache.keySet());
+        } else {
+            return null;
+        }
+    }
+
+    private void addSearchCache(@NonNull String keyword, @NonNull List<Book> books) {
+        checkNotNull(books);
+
+        if (mSearcedBookCache == null) {
+            mSearcedBookCache = new LinkedHashMap<>();
+        }
+
+        mSearcedBookCache.put(keyword, books);
     }
 
     private void getBooksFromRemoteDataSource(@NonNull final LoadBooksCallback callback) {

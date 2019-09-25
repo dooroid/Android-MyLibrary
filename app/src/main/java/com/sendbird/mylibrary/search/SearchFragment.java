@@ -5,7 +5,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private SearchContract.Presenter mPresenter;
 
     private SimpleBooksAdapter mAdapter;
+
+    private AutoCompleteTextView mSearchBox;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -65,8 +68,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
 
-        EditText searchBox = root.findViewById(R.id.edit_query);
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSearchBox = root.findViewById(R.id.edit_query);
+        mSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 mPresenter.searchBooks(textView.getText().toString());
@@ -86,5 +89,12 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void showBooks(List<Book> books) {
         mAdapter.replaceData(books);
+    }
+
+    @Override
+    public void updateSearchHistory(List<String> history) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1, history);
+        mSearchBox.setAdapter(adapter);
     }
 }

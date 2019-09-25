@@ -26,7 +26,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void start() {
-        // loadBookmark();
+        mSearchView.updateSearchHistory(mBooksRepository.getSearchHistory());
     }
 
     @Override
@@ -35,6 +35,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mSearchView.showBooks(books);
+                mSearchView.updateSearchHistory(mBooksRepository.getSearchHistory());
             }
 
             @Override

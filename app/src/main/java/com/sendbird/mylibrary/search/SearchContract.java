@@ -12,6 +12,8 @@ public interface SearchContract {
 
         void showBooks(List<Book> books);
 
+        void updateSearchHistory(List<String> history);
+
     }
 
     interface Presenter extends BasePresenter {
