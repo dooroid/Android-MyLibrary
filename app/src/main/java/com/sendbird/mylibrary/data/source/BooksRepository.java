@@ -146,7 +146,7 @@ public class BooksRepository implements BooksDataSource {
         });
     }
 
-    public void getBookmarkByTitleSort(@NonNull final LoadBooksCallback callback) {
+    public void getBookmarkSortedByTitle(@NonNull final LoadBooksCallback callback) {
         checkNotNull(callback);
 
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
@@ -168,7 +168,7 @@ public class BooksRepository implements BooksDataSource {
         });
     }
 
-    public void getBookmarkByPriceSort(@NonNull final LoadBooksCallback callback) {
+    public void getBookmarkSortedByPrice(@NonNull final LoadBooksCallback callback) {
         checkNotNull(callback);
 
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
@@ -190,7 +190,7 @@ public class BooksRepository implements BooksDataSource {
         });
     }
 
-    public void getBookmarkByAuthorsSort(@NonNull final LoadBooksCallback callback) {
+    public void getBookmarkSortedByAuthors(@NonNull final LoadBooksCallback callback) {
         checkNotNull(callback);
 
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
@@ -212,7 +212,7 @@ public class BooksRepository implements BooksDataSource {
         });
     }
 
-    public void getBookmarkByPublisherSort(@NonNull final LoadBooksCallback callback) {
+    public void getBookmarkSortedByPublisher(@NonNull final LoadBooksCallback callback) {
         checkNotNull(callback);
 
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {

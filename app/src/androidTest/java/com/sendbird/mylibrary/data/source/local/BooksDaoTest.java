@@ -125,6 +125,23 @@ public class BooksDaoTest {
     }
 
     @Test
+    public void updateMemo_GetById() {
+        String memo = "LALLDLFALSDFAS";
+
+        // When inserting a book
+        mDatabase.booksDao().insertBook(BOOK);
+
+        // When the book is updated
+        mDatabase.booksDao().updateMemo(BOOK.getId(), memo);
+
+        // When getting the book by id from the database
+        Book loaded = mDatabase.booksDao().getBookById(BOOK.getId());
+
+        // The loaded data contains the expected values
+        assertThat(loaded.getMemo(), is(memo));
+    }
+
+    @Test
     public void deleteBookById_GettingBooks() {
         //Given a book inserted
         mDatabase.booksDao().insertBook(BOOK);

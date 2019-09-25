@@ -118,4 +118,21 @@ public class BookDetailPresenterTest {
         mBookDetailPresenter.addHistory();
         verify(mBooksRepository).addHistory(BOOK_ID);
     }
+
+    @Test
+    public void addMemo_CallViewToDisplay() {
+        mBookDetailPresenter = new BookDetailPresenter(BOOK_ID, mBooksRepository, mBookDetailView);
+        mBookDetailPresenter.start();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBook(eq(BOOK_ID), mGetBookCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mGetBookCallbackCaptor.getValue().onBookLoaded(BOOK_NOT_MARKED); // Trigger callback
+
+        String memo = "llallalalalalalalla";
+        mBookDetailPresenter.addMemo(memo);
+        verify(mBooksRepository).addMemo(BOOK_ID, memo);
+        verify(mBookDetailView).showMemo(memo);
+    }
 }

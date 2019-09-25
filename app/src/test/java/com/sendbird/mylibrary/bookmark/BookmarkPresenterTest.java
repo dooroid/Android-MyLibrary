@@ -86,4 +86,62 @@ public class BookmarkPresenterTest {
 
         verify(mBookmarkView).showBooks(BOOKS);
     }
+
+    @Test
+    public void loadBooksSortedByTitle_CallViewToDisplay() {
+        mBookmarkPresenter.sortByTitle();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBookmarkSortedByTitle(mLoadBooksCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mLoadBooksCallbackCaptor.getValue().onBooksLoaded(BOOKS); // Trigger callback
+
+        verify(mBookmarkView).showBooks(BOOKS);
+    }
+
+    @Test
+    public void loadBooksSortedByPrice_CallViewToDisplay() {
+        mBookmarkPresenter.sortByPrice();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBookmarkSortedByPrice(mLoadBooksCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mLoadBooksCallbackCaptor.getValue().onBooksLoaded(BOOKS); // Trigger callback
+
+        verify(mBookmarkView).showBooks(BOOKS);
+    }
+
+    @Test
+    public void loadBooksSortedByAuthors_CallViewToDisplay() {
+        mBookmarkPresenter.sortByAuthors();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBookmarkSortedByAuthors(mLoadBooksCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mLoadBooksCallbackCaptor.getValue().onBooksLoaded(BOOKS); // Trigger callback
+
+        verify(mBookmarkView).showBooks(BOOKS);
+    }
+
+    @Test
+    public void loadBooksSortedByPublisher_CallViewToDisplay() {
+        mBookmarkPresenter.sortByPublisher();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBookmarkSortedByPublisher(mLoadBooksCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mLoadBooksCallbackCaptor.getValue().onBooksLoaded(BOOKS); // Trigger callback
+
+        verify(mBookmarkView).showBooks(BOOKS);
+    }
+
+    @Test
+    public void removeBookmark() {
+        mBookmarkPresenter.removeBookmark(BOOKS.get(0).getId());
+        verify(mBooksRepository).removeBookmark(BOOKS.get(0).getId());
+    }
 }

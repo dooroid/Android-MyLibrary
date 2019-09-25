@@ -86,4 +86,10 @@ public class HistoryPresenterTest {
 
         verify(mHistoryView).showBooks(BOOKS);
     }
+
+    @Test
+    public void removeHistory() {
+        mHistoryPresenter.removeHistory(BOOKS.get(0).getId());
+        verify(mBooksRepository).removeHistory(BOOKS.get(0).getId());
+    }
 }

@@ -201,6 +201,13 @@ public class BooksRepositoryTest {
     }
 
     @Test
+    public void addMemo_requestBookFromLocalDataSource() {
+        String memo = "LALALALa";
+        mBooksRepository.addMemo(BOOK_ID, memo);
+        verify(mBooksLocalDataSource).addMemo(BOOK_ID, memo);
+    }
+
+    @Test
     public void deleteAllBooks_deleteBooksToServiceAPIUpdatesCache() {
         mBooksRepository.saveBook(BOOKS.get(0));
         mBooksRepository.saveBook(BOOKS.get(1));

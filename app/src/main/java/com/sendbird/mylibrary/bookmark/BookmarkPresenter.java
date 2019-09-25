@@ -40,7 +40,7 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
 
     @Override
     public void sortByTitle() {
-        mBooksRepository.getBookmarkByTitleSort(new BooksDataSource.LoadBooksCallback() {
+        mBooksRepository.getBookmarkSortedByTitle(new BooksDataSource.LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mBookmarkView.showBooks(books);
@@ -55,7 +55,7 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
 
     @Override
     public void sortByPrice() {
-        mBooksRepository.getBookmarkByPriceSort(new BooksDataSource.LoadBooksCallback() {
+        mBooksRepository.getBookmarkSortedByPrice(new BooksDataSource.LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mBookmarkView.showBooks(books);
@@ -70,7 +70,7 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
 
     @Override
     public void sortByAuthors() {
-        mBooksRepository.getBookmarkByAuthorsSort(new BooksDataSource.LoadBooksCallback() {
+        mBooksRepository.getBookmarkSortedByAuthors(new BooksDataSource.LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mBookmarkView.showBooks(books);
@@ -85,7 +85,7 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
 
     @Override
     public void sortByPublisher() {
-        mBooksRepository.getBookmarkByPublisherSort(new BooksDataSource.LoadBooksCallback() {
+        mBooksRepository.getBookmarkSortedByPublisher(new BooksDataSource.LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mBookmarkView.showBooks(books);
