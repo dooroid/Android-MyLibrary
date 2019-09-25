@@ -1,6 +1,7 @@
 package com.sendbird.mylibrary.data.source;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.sendbird.mylibrary.data.Book;
 
@@ -28,15 +29,15 @@ public interface BooksDataSource {
 
     void getBookmark(@NonNull LoadBooksCallback callback);
 
-    void addBookmark(@NonNull Book book);
+    void addBookmark(@NonNull String bookId);
 
-    void removeBookmark(@NonNull Book book);
+    void removeBookmark(@NonNull String bookId);
 
     void getHistory(@NonNull LoadBooksCallback callback);
 
-    void addHistory(@NonNull Book book);
+    void addHistory(@NonNull String bookId);
 
-    void removeHistory(@NonNull Book book);
+    void removeHistory(@NonNull String bookId);
 
     void searchBooks(@NonNull String query, @NonNull LoadBooksCallback callback);
 
@@ -47,4 +48,6 @@ public interface BooksDataSource {
     void deleteAllBooks();
 
     void deleteBook(@NonNull String bookId);
+
+    void addMemo(@NonNull String bookId, @Nullable String memo);
 }

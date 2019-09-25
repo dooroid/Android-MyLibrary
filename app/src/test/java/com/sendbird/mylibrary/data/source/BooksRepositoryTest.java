@@ -69,9 +69,9 @@ public class BooksRepositoryTest {
         mBooksRepository = BooksRepository.getInstance(
                 mBooksRemoteDataSource, mBooksLocalDataSource);
 
-        BOOKS = Lists.newArrayList(new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, false, 0L),
-                new Book("The 5AM Miracle", null, "2", null, null, null, null, null, null, null, null, null, null, null, true, 0L),
-                new Book("The Power of Detail", null, "3", null, null, null, null, null, null, null, null, null, null, null, true, 0L));
+        BOOKS = Lists.newArrayList(new Book("One Thing", "1",false, 123533L),
+                new Book("The 5AM Miracle", "2",true, 0L),
+                new Book("The Power of Detail", "3", true, 0L));
     }
 
     @After
@@ -137,13 +137,12 @@ public class BooksRepositoryTest {
         mBooksRepository.saveBook(newBook);
 
         // When a book is completed to the books repository
-        mBooksRepository.addBookmark(newBook);
+        mBooksRepository.addBookmark(newBook.getId());
 
         // Then the service API and persistent repository are called and the cache is updated
-        verify(mBooksRemoteDataSource).addBookmark(newBook);
-        verify(mBooksLocalDataSource).addBookmark(newBook);
+        verify(mBooksRemoteDataSource).addBookmark(newBook.getId());
+        verify(mBooksLocalDataSource).addBookmark(newBook.getId());
         assertThat(mBooksRepository.mCachedBooks.size(), is(1));
-        assertThat(mBooksRepository.mCachedBooks.get(newBook.getId()).isBookmark(), is(true));
     }
 
     @Test
@@ -153,13 +152,12 @@ public class BooksRepositoryTest {
         mBooksRepository.saveBook(newBook);
 
         // When a book is completed to the books repository
-        mBooksRepository.removeBookmark(newBook);
+        mBooksRepository.removeBookmark(newBook.getId());
 
         // Then the service API and persistent repository are called and the cache is updated
-        verify(mBooksRemoteDataSource).removeBookmark(newBook);
-        verify(mBooksLocalDataSource).removeBookmark(newBook);
+        verify(mBooksRemoteDataSource).removeBookmark(newBook.getId());
+        verify(mBooksLocalDataSource).removeBookmark(newBook.getId());
         assertThat(mBooksRepository.mCachedBooks.size(), is(1));
-        assertThat(mBooksRepository.mCachedBooks.get(newBook.getId()).isBookmark(), is(false));
     }
 
     @Test
@@ -169,13 +167,12 @@ public class BooksRepositoryTest {
         mBooksRepository.saveBook(newBook);
 
         // When a book is completed to the books repository
-        mBooksRepository.addHistory(newBook);
+        mBooksRepository.addHistory(newBook.getId());
 
         // Then the service API and persistent repository are called and the cache is updated
-        verify(mBooksRemoteDataSource).addHistory(newBook);
-        verify(mBooksLocalDataSource).addHistory(newBook);
+        verify(mBooksRemoteDataSource).addHistory(newBook.getId());
+        verify(mBooksLocalDataSource).addHistory(newBook.getId());
         assertThat(mBooksRepository.mCachedBooks.size(), is(1));
-        assertNotEquals(mBooksRepository.mCachedBooks.get(newBook.getId()).getHistory(), is(0L));
     }
 
     @Test
@@ -185,13 +182,12 @@ public class BooksRepositoryTest {
         mBooksRepository.saveBook(newBook);
 
         // When a book is completed to the books repository
-        mBooksRepository.removeHistory(newBook);
+        mBooksRepository.removeHistory(newBook.getId());
 
         // Then the service API and persistent repository are called and the cache is updated
-        verify(mBooksRemoteDataSource).removeHistory(newBook);
-        verify(mBooksLocalDataSource).removeHistory(newBook);
+        verify(mBooksRemoteDataSource).removeHistory(newBook.getId());
+        verify(mBooksLocalDataSource).removeHistory(newBook.getId());
         assertThat(mBooksRepository.mCachedBooks.size(), is(1));
-        assertThat(mBooksRepository.mCachedBooks.get(newBook.getId()).getHistory(), is(0L));
     }
 
     @Test
@@ -202,6 +198,13 @@ public class BooksRepositoryTest {
         // Then the book is loaded from the database
         verify(mBooksRemoteDataSource).searchBooks(eq(STRING), any(
                 BooksDataSource.LoadBooksCallback.class));
+    }
+
+    @Test
+    public void addMemo_requestBookFromLocalDataSource() {
+        String memo = "LALALALa";
+        mBooksRepository.addMemo(BOOK_ID, memo);
+        verify(mBooksLocalDataSource).addMemo(BOOK_ID, memo);
     }
 
     @Test

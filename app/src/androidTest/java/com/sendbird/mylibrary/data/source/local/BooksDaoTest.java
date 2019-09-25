@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class BooksDaoTest {
-    private static final Book BOOK = new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, true, 0L);
+    private static final Book BOOK = new Book("One Thing", "1", true, 0L);
 
     private LibraryDatabase mDatabase;
 
@@ -55,7 +55,7 @@ public class BooksDaoTest {
         mDatabase.booksDao().insertBook(BOOK);
 
         // When a book with the same id is inserted
-        Book newBook = new Book("The 5AM Miracle", null, "1", null, null, null, null, null, null, null, null, null, null, null, false, 454646L);
+        Book newBook = new Book("The 5AM Miracle", "1",false, 454646L);
         mDatabase.booksDao().insertBook(newBook);
         // When getting the book by id from the database
         Book loaded = mDatabase.booksDao().getBookById(BOOK.getId());
@@ -84,7 +84,7 @@ public class BooksDaoTest {
         mDatabase.booksDao().insertBook(BOOK);
 
         // When the book is updated
-        Book newBook = new Book("The 5AM Miracle", null, "1", null, null, null, null, null, null, null, null, null, null, null, false, 454646L);
+        Book newBook = new Book("The 5AM Miracle", "1", false, 454646L);
         mDatabase.booksDao().updateBook(newBook);
 
         // When getting the book by id from the database
@@ -122,6 +122,23 @@ public class BooksDaoTest {
 
         // The loaded data contains the expected values
         assertBook(loaded, BOOK.getId(), BOOK.getTitle(),  BOOK.isBookmark(), 123L);
+    }
+
+    @Test
+    public void updateMemo_GetById() {
+        String memo = "LALLDLFALSDFAS";
+
+        // When inserting a book
+        mDatabase.booksDao().insertBook(BOOK);
+
+        // When the book is updated
+        mDatabase.booksDao().updateMemo(BOOK.getId(), memo);
+
+        // When getting the book by id from the database
+        Book loaded = mDatabase.booksDao().getBookById(BOOK.getId());
+
+        // The loaded data contains the expected values
+        assertThat(loaded.getMemo(), is(memo));
     }
 
     @Test

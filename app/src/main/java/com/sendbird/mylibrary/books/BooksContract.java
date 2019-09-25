@@ -15,6 +15,8 @@ public interface BooksContract {
         void showBooks(List<Book> books);
 
         void showBookDetailsUi(String bookId);
+
+        void showNotice(int redId);
     }
 
     interface Presenter extends BasePresenter {

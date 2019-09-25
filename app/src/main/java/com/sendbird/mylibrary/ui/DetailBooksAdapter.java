@@ -18,12 +18,32 @@ public class DetailBooksAdapter extends RecyclerView.Adapter<DetailBooksViewHold
 
     private List<Book> mBooks;
 
+    private BookItemListener mRemoveClickListener;
+
+    private int mEditButtonVisibility = View.GONE;
+
+    public DetailBooksAdapter(List<Book> books, BookItemListener itemListener) {
+        setList(books);
+        mRemoveClickListener = itemListener;
+    }
+
     public DetailBooksAdapter(List<Book> books) {
         setList(books);
     }
 
     public void replaceData(List<Book> books) {
         setList(books);
+        notifyDataSetChanged();
+    }
+
+    public void removeData(Book book) {
+        mBooks.remove(book);
+        setList(mBooks);
+        notifyDataSetChanged();
+    }
+
+    public void setEditButtonVisibility (int visibility) {
+        mEditButtonVisibility = visibility;
         notifyDataSetChanged();
     }
 
@@ -58,6 +78,14 @@ public class DetailBooksAdapter extends RecyclerView.Adapter<DetailBooksViewHold
         holder.setYear(mBooks.get(position).getYear());
         holder.setRating(mBooks.get(position).getRating());
         holder.setDesc(mBooks.get(position).getDesc());
+
+        holder.setOnRemoveClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRemoveClickListener.onBookClick(mBooks.get(position));
+            }
+        });
+        holder.setRemoveFabVisibility(mEditButtonVisibility);
     }
 
     @Override

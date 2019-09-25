@@ -16,6 +16,23 @@
     <string name="pages_key">Pages</string>
     <string name="year_key">Year</string>
     <string name="rating_key">Rating</string>
-    <string name="colon"> : </string>
+
+    <string name="memo_title">Please Enter Memo</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCLE</string>
+    <string name="remove">REMOVE</string>
+
+    <string name="done">Done</string>
+    <string name="edit_list">Edit List</string>
+    <string name="title_sort">Sort by Title</string>
+    <string name="price_sort">Sort by Price</string>
+    <string name="authors_sort">Sort by Authors</string>
+    <string name="publisher_sort">Sort by Publisher</string>
+
+    <string name="notice_loading">Loading...</string>
+    <string name="notice_no_data">No Data</string>
+
+    <string name="notice_add_bookmark">Added to bookmark.</string>
+    <string name="notice_remove_bookmark">Bookmark was removed.</string>
 
 </resources>

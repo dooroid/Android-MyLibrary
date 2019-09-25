@@ -2,7 +2,7 @@ package com.sendbird.mylibrary.books;
 
 import androidx.annotation.NonNull;
 
-
+import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.data.source.BooksRepository;
@@ -35,6 +35,7 @@ public class BooksPresenter implements BooksContract.Presenter {
             @Override
             public void onDataNotAvailable() {
                 System.out.println("onDataNotAvailable");
+                mBooksView.showNotice(R.string.notice_no_data);
             }
         });
     }

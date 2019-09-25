@@ -1,18 +1,22 @@
 package com.sendbird.mylibrary.bookdetail;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 
@@ -42,7 +46,10 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
     private TextView mRating;
     private TextView mDesc;
 
+    private TextView mMemoView;
+
     private FloatingActionButton mBookmark;
+    private boolean mIsBookmark;
 
     public static BookDetailFragment newInstance(@Nullable String bookId) {
         Bundle arguments = new Bundle();
@@ -79,14 +86,50 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mRating = root.findViewById(R.id.rating_text);
         mDesc = root.findViewById(R.id.desc_text);
 
+        mMemoView = root.findViewById(R.id.memo_view);
+
         // Set up floating action button
         mBookmark = root.findViewById(R.id.fab_bookmark);
-
         mBookmark.setImageResource(R.drawable.ic_star_disabled);
         mBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.bookmarkBook();
+                if (mIsBookmark) {
+                    mPresenter.removeBookmark();
+                } else {
+                    mPresenter.addBookmark();
+                }
+            }
+        });
+
+        FloatingActionButton memoEdit = root.findViewById(R.id.fab_memo);
+        memoEdit.setImageResource(R.drawable.ic_write);
+        memoEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+                View memoView = inflater.inflate(R.layout.memo_dialog, null);
+                final EditText memo = memoView.findViewById(R.id.memo_edit);
+
+                builder.setTitle(R.string.memo_title)
+                        .setView(memoView)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mPresenter.addMemo(memo.getText().toString());
+                            }})
+                        .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }})
+                        .setNegativeButton(R.string.remove, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mPresenter.addMemo("");
+                            }});
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -122,10 +165,26 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
 
     @Override
     public void showBookmark(boolean isBookmark) {
-        if (isBookmark) {
+        mIsBookmark = isBookmark;
+        if (mIsBookmark) {
             mBookmark.setImageResource(R.drawable.ic_star_enabled);
         } else {
             mBookmark.setImageResource(R.drawable.ic_star_disabled);
         }
+    }
+
+    @Override
+    public void showMemo(String memo) {
+        if (memo == null || memo.isEmpty()) {
+            mMemoView.setVisibility(View.INVISIBLE);
+        } else {
+            mMemoView.setVisibility(View.VISIBLE);
+            mMemoView.setText(memo);
+        }
+    }
+
+    @Override
+    public void showNotice(int resId) {
+        Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
     }
 }

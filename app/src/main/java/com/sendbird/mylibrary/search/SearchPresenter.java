@@ -2,6 +2,7 @@ package com.sendbird.mylibrary.search;
 
 import androidx.annotation.NonNull;
 
+import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.data.source.BooksRepository;
@@ -26,7 +27,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void start() {
-        // loadBookmark();
+        mSearchView.updateSearchHistory(mBooksRepository.getSearchHistory());
     }
 
     @Override
@@ -35,11 +36,13 @@ public class SearchPresenter implements SearchContract.Presenter {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 mSearchView.showBooks(books);
+                mSearchView.updateSearchHistory(mBooksRepository.getSearchHistory());
             }
 
             @Override
             public void onDataNotAvailable() {
                 System.out.println("onDataNotAvailable");
+                mSearchView.showNotice(R.string.notice_no_data);
             }
         });
     }

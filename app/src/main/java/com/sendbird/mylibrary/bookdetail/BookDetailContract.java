@@ -12,11 +12,18 @@ public interface BookDetailContract {
 
         void showBookmark(boolean isBookmark);
 
+        void showMemo(String memo);
+
+        void showNotice(int resId);
     }
 
     interface Presenter extends BasePresenter {
-        void bookmarkBook();
+        void removeBookmark();
+
+        void addBookmark();
 
         void addHistory();
+
+        void addMemo(String memo);
     }
 }

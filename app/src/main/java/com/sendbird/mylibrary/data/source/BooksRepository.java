@@ -8,6 +8,7 @@ import com.sendbird.mylibrary.data.Book;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class BooksRepository implements BooksDataSource {
     private final BooksDataSource mBooksLocalDataSource;
 
     Map<String, Book> mCachedBooks;
+
+    Map<String, List<Book>> mSearcedBookCache;
 
     boolean mCacheIsDirty = false;
 
@@ -132,6 +135,95 @@ public class BooksRepository implements BooksDataSource {
         mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books);
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkSortedByTitle(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getTitle().compareTo(t1.getTitle());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkSortedByPrice(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getPrice().compareTo(t1.getPrice());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkSortedByAuthors(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getAuthors().compareTo(t1.getAuthors());
+                    }
+                });
+                callback.onBooksLoaded(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    public void getBookmarkSortedByPublisher(@NonNull final LoadBooksCallback callback) {
+        checkNotNull(callback);
+
+        mBooksLocalDataSource.getBookmark(new LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                Collections.sort(books, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getPublisher().compareTo(t1.getPublisher());
+                    }
+                });
                 callback.onBooksLoaded(books);
             }
 
@@ -143,63 +235,19 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
-    public void addBookmark(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.addBookmark(book);
-        mBooksLocalDataSource.addBookmark(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                true,
-                book.getHistory());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void addBookmark(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.addBookmark(bookId);
+        mBooksLocalDataSource.addBookmark(bookId);
+        refreshCache(bookId);
     }
 
     @Override
-    public void removeBookmark(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.removeBookmark(book);
-        mBooksLocalDataSource.removeBookmark(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                                    book.getSubtitle(),
-                                    book.getId(),
-                                    book.getPrice(),
-                                    book.getImage(),
-                                    book.getUrl(),
-                                    book.getAuthors(),
-                                    book.getPublisher(),
-                                    book.getLanguage(),
-                                    book.getIsbn10(),
-                                    book.getPages(),
-                                    book.getYear(),
-                                    book.getRating(),
-                                    book.getDesc(),
-                                    false,
-                                    book.getHistory());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void removeBookmark(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.removeBookmark(bookId);
+        mBooksLocalDataSource.removeBookmark(bookId);
+        refreshCache(bookId);
     }
 
     @Override
@@ -221,71 +269,33 @@ public class BooksRepository implements BooksDataSource {
     }
 
     @Override
-    public void addHistory(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.addHistory(book);
-        mBooksLocalDataSource.addHistory(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                book.isBookmark(),
-                System.currentTimeMillis());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void addHistory(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.addHistory(bookId);
+        mBooksLocalDataSource.addHistory(bookId);
+        refreshCache(bookId);
     }
 
     @Override
-    public void removeHistory(@NonNull Book book) {
-        checkNotNull(book);
-        mBooksRemoteDataSource.removeHistory(book);
-        mBooksLocalDataSource.removeHistory(book);
-
-        Book updatedBook = new Book(book.getTitle(),
-                book.getSubtitle(),
-                book.getId(),
-                book.getPrice(),
-                book.getImage(),
-                book.getUrl(),
-                book.getAuthors(),
-                book.getPublisher(),
-                book.getLanguage(),
-                book.getIsbn10(),
-                book.getPages(),
-                book.getYear(),
-                book.getRating(),
-                book.getDesc(),
-                book.isBookmark(),
-                0L);
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedBooks == null) {
-            mCachedBooks = new LinkedHashMap<>();
-        }
-        mCachedBooks.put(book.getId(), updatedBook);
+    public void removeHistory(@NonNull String bookId) {
+        checkNotNull(bookId);
+        mBooksRemoteDataSource.removeHistory(bookId);
+        mBooksLocalDataSource.removeHistory(bookId);
+        refreshCache(bookId);
     }
 
     @Override
-    public void searchBooks(@NonNull String query, @NonNull final LoadBooksCallback callback) {
+    public void searchBooks(@NonNull final String query, @NonNull final LoadBooksCallback callback) {
+        if (mSearcedBookCache != null && mSearcedBookCache.containsKey(query)) {
+            callback.onBooksLoaded(mSearcedBookCache.get(query));
+            return;
+        }
+
         mBooksRemoteDataSource.searchBooks(query, new LoadBooksCallback() {
             @Override
             public void onBooksLoaded(List<Book> books) {
                 callback.onBooksLoaded(books);
+                addSearchCache(query, books);
             }
 
             @Override
@@ -332,6 +342,33 @@ public class BooksRepository implements BooksDataSource {
         mCachedBooks.remove(bookId);
     }
 
+    @Override
+    public void addMemo(@NonNull String bookId, @Nullable String memo) {
+        checkNotNull(bookId);
+        mBooksLocalDataSource.addMemo(bookId, memo);
+        refreshCache(bookId);
+    }
+
+    public List<String> getSearchHistory() {
+        if (mSearcedBookCache != null && mSearcedBookCache.keySet().size() != 0) {
+            ArrayList<String> history = new ArrayList<>(mSearcedBookCache.keySet());
+            Collections.reverse(history);
+            return history;
+        } else {
+            return null;
+        }
+    }
+
+    private void addSearchCache(@NonNull String keyword, @NonNull List<Book> books) {
+        checkNotNull(books);
+
+        if (mSearcedBookCache == null) {
+            mSearcedBookCache = new LinkedHashMap<>();
+        }
+
+        mSearcedBookCache.put(keyword, books);
+    }
+
     private void getBooksFromRemoteDataSource(@NonNull final LoadBooksCallback callback) {
         mBooksRemoteDataSource.getBooks(new LoadBooksCallback() {
 
@@ -358,6 +395,35 @@ public class BooksRepository implements BooksDataSource {
             mCachedBooks.put(book.getId(), book);
         }
         mCacheIsDirty = false;
+    }
+
+    private void refreshCache(final String bookId) {
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+
+        mBooksLocalDataSource.getBook(bookId, new GetBookCallback() {
+            @Override
+            public void onBookLoaded(Book book) {
+                mCachedBooks.put(book.getId(), book);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mBooksRemoteDataSource.getBook(bookId, new GetBookCallback() {
+                    @Override
+                    public void onBookLoaded(Book book) {
+                        mBooksLocalDataSource.saveBook(book);
+                        mCachedBooks.put(bookId, book);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        mCachedBooks.remove(bookId);
+                    }
+                });
+            }
+        });
     }
 
     private void refreshLocalDataSource(List<Book> books) {

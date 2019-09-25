@@ -21,8 +21,8 @@ public class BookDetailPresenterTest {
 
     public static final String BOOK_ID = "1";
 
-    public static final Book BOOK_MARKED = new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, true, 0L);
-    public static final Book BOOK_NOT_MARKED = new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, false, 0L);
+    public static final Book BOOK_MARKED = new Book("One Thing", "1", true, 0L);
+    public static final Book BOOK_NOT_MARKED = new Book("One Thing", "1", false, 0L);
 
     @Mock
     private BooksRepository mBooksRepository;
@@ -85,8 +85,8 @@ public class BookDetailPresenterTest {
         // When book is finally loaded
         mGetBookCallbackCaptor.getValue().onBookLoaded(BOOK_MARKED); // Trigger callback
 
-        mBookDetailPresenter.bookmarkBook();
-        verify(mBooksRepository).removeBookmark(BOOK_MARKED);
+        mBookDetailPresenter.removeBookmark();
+        verify(mBooksRepository).removeBookmark(BOOK_ID);
     }
 
     @Test
@@ -100,8 +100,8 @@ public class BookDetailPresenterTest {
         // When book is finally loaded
         mGetBookCallbackCaptor.getValue().onBookLoaded(BOOK_NOT_MARKED); // Trigger callback
 
-        mBookDetailPresenter.bookmarkBook();
-        verify(mBooksRepository).addBookmark(BOOK_NOT_MARKED);
+        mBookDetailPresenter.addBookmark();
+        verify(mBooksRepository).addBookmark(BOOK_ID);
     }
 
     @Test
@@ -116,6 +116,23 @@ public class BookDetailPresenterTest {
         mGetBookCallbackCaptor.getValue().onBookLoaded(BOOK_NOT_MARKED); // Trigger callback
 
         mBookDetailPresenter.addHistory();
-        verify(mBooksRepository).addHistory(BOOK_NOT_MARKED);
+        verify(mBooksRepository).addHistory(BOOK_ID);
+    }
+
+    @Test
+    public void addMemo_CallViewToDisplay() {
+        mBookDetailPresenter = new BookDetailPresenter(BOOK_ID, mBooksRepository, mBookDetailView);
+        mBookDetailPresenter.start();
+
+        // Then book is loaded from model, callback is captured and progress indicator is shown
+        verify(mBooksRepository).getBook(eq(BOOK_ID), mGetBookCallbackCaptor.capture());
+
+        // When book is finally loaded
+        mGetBookCallbackCaptor.getValue().onBookLoaded(BOOK_NOT_MARKED); // Trigger callback
+
+        String memo = "llallalalalalalalla";
+        mBookDetailPresenter.addMemo(memo);
+        verify(mBooksRepository).addMemo(BOOK_ID, memo);
+        verify(mBookDetailView).showMemo(memo);
     }
 }

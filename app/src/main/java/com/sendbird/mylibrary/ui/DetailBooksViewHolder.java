@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sendbird.mylibrary.R;
 
 public class DetailBooksViewHolder extends RecyclerView.ViewHolder {
@@ -28,6 +29,8 @@ public class DetailBooksViewHolder extends RecyclerView.ViewHolder {
     private TextView mRating;
     private TextView mDesc;
 
+    private FloatingActionButton mRemoveFab;
+
     public DetailBooksViewHolder(View v) {
         super(v);
         mView = v;
@@ -46,6 +49,8 @@ public class DetailBooksViewHolder extends RecyclerView.ViewHolder {
         mYear = v.findViewById(R.id.year_text);
         mRating = v.findViewById(R.id.rating_text);
         mDesc = v.findViewById(R.id.desc_text);
+
+        mRemoveFab = v.findViewById(R.id.fab_remove);
     }
 
     public void setImage (String image) {
@@ -102,5 +107,13 @@ public class DetailBooksViewHolder extends RecyclerView.ViewHolder {
 
     public void setDesc(String desc) {
         mDesc.setText(desc);
+    }
+
+    public void setOnRemoveClickListener(View.OnClickListener listener) {
+        mRemoveFab.setOnClickListener(listener);
+    }
+
+    public void setRemoveFabVisibility(int visibility) {
+        mRemoveFab.setVisibility(visibility);
     }
 }

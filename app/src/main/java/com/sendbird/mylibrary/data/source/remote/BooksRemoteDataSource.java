@@ -88,12 +88,12 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addBookmark(@NonNull Book book) {
+    public void addBookmark(@NonNull String bookId) {
 
     }
 
     @Override
-    public void removeBookmark(@NonNull Book book) {
+    public void removeBookmark(@NonNull String bookId) {
 
     }
 
@@ -103,12 +103,12 @@ public class BooksRemoteDataSource implements BooksDataSource {
     }
 
     @Override
-    public void addHistory(@NonNull Book book) {
+    public void addHistory(@NonNull String bookId) {
 
     }
 
     @Override
-    public void removeHistory(@NonNull Book book) {
+    public void removeHistory(@NonNull String bookId) {
 
     }
 
@@ -122,6 +122,11 @@ public class BooksRemoteDataSource implements BooksDataSource {
             public void onResponse(@Nullable Call<ResponseBody> call,
                                    @Nullable Response<ResponseBody> response) {
                 if (response != null && response.body() != null && response.body().error == 0) {
+                    if (response.body().total == 0) {
+                        callback.onDataNotAvailable();
+                        return;
+                    }
+
                     if (response.body().total <= 10) {
                         callback.onBooksLoaded(response.body().books);
                     } else {
@@ -187,6 +192,11 @@ public class BooksRemoteDataSource implements BooksDataSource {
 
     @Override
     public void deleteBook(@NonNull String bookId) {
+
+    }
+
+    @Override
+    public void addMemo(@NonNull String bookId, @Nullable String memo) {
 
     }
 }

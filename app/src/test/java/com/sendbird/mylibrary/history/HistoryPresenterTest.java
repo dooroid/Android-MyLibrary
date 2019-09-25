@@ -48,9 +48,9 @@ public class HistoryPresenterTest {
         mHistoryPresenter = new HistoryPresenter(mBooksRepository, mHistoryView);
 
         // We start the books to 3, with one active and two completed
-        BOOKS = Lists.newArrayList(new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, true, 0L),
-                new Book("The 5AM Miracle", null, "2", null, null, null, null, null, null, null, null, null, null, null, true, 0L),
-                new Book("The Power of Detail", null, "3", null, null, null, null, null, null, null, null, null, null, null, true, 0L));
+        BOOKS = Lists.newArrayList(new Book("One Thing", "1", true, 0L),
+                new Book("The 5AM Miracle", "2", true, 0L),
+                new Book("The Power of Detail", "3", true, 0L));
     }
 
     @Test
@@ -85,5 +85,11 @@ public class HistoryPresenterTest {
         mLoadBooksCallbackCaptor.getValue().onBooksLoaded(BOOKS);
 
         verify(mHistoryView).showBooks(BOOKS);
+    }
+
+    @Test
+    public void removeHistory() {
+        mHistoryPresenter.removeHistory(BOOKS.get(0).getId());
+        verify(mBooksRepository).removeHistory(BOOKS.get(0).getId());
     }
 }

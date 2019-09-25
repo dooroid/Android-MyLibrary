@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.bookdetail.BookDetailActivity;
 import com.sendbird.mylibrary.data.Book;
@@ -84,5 +85,10 @@ public class BooksFragment extends Fragment implements BooksContract.View {
         Intent intent = new Intent(getContext(), BookDetailActivity.class);
         intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, bookId);
         startActivity(intent);
+    }
+
+    @Override
+    public void showNotice(int resId) {
+        Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
     }
 }

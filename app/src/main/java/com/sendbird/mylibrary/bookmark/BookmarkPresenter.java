@@ -37,4 +37,69 @@ public class BookmarkPresenter implements BookmarkContract.Presenter {
              }
          });
     }
+
+    @Override
+    public void sortByTitle() {
+        mBooksRepository.getBookmarkSortedByTitle(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByPrice() {
+        mBooksRepository.getBookmarkSortedByPrice(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByAuthors() {
+        mBooksRepository.getBookmarkSortedByAuthors(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void sortByPublisher() {
+        mBooksRepository.getBookmarkSortedByPublisher(new BooksDataSource.LoadBooksCallback() {
+            @Override
+            public void onBooksLoaded(List<Book> books) {
+                mBookmarkView.showBooks(books);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                System.out.println("onDataNotAvailable");
+            }
+        });
+    }
+
+    @Override
+    public void removeBookmark(String bookId) {
+        mBooksRepository.removeBookmark(bookId);
+    }
 }
