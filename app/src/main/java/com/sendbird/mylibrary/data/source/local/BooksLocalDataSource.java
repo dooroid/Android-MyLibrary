@@ -1,13 +1,13 @@
 package com.sendbird.mylibrary.data.source.local;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.util.AppExecutors;
 
-import java.util.Date;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -198,24 +198,6 @@ public class BooksLocalDataSource implements BooksDataSource {
         mAppExecutors.diskIO().execute(saveRunnable);
     }
 
-//    @Override
-//    public void completeBook(@NonNull final Book book) {
-//        Runnable completeRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                mBooksDao.updateCompleted(book.getId(), true);
-//            }
-//        };
-//
-//        mAppExecutors.diskIO().execute(completeRunnable);
-//    }
-
-//    @Override
-//    public void completebook(@NonNull String bookId) {
-//        // Not required for the local data source because the {@link booksRepository} handles
-//        // converting from a {@code bookId} to a {@link book} using its cached data.
-//    }
-
     @Override
     public void refreshBooks() {
         // Not required because the {@link booksRepository} handles the logic of refreshing the
@@ -244,6 +226,18 @@ public class BooksLocalDataSource implements BooksDataSource {
         };
 
         mAppExecutors.diskIO().execute(deleteRunnable);
+    }
+
+    @Override
+    public void addMemo(@NonNull final String bookId, @Nullable final String memo) {
+        Runnable bookmarkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBooksDao.updateMemo(bookId, memo);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(bookmarkRunnable);
     }
 
     @VisibleForTesting

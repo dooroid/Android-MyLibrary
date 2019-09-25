@@ -95,6 +95,10 @@ public final class Book implements Comparable<Book> {
     @ColumnInfo(name = "history")
     private final long mHistory;
 
+    @Nullable
+    @ColumnInfo(name = "memo")
+    private String mMemo;
+
     public Book(@Nullable String title,
                 @Nullable String subtitle,
                 @NonNull String id,
@@ -206,6 +210,17 @@ public final class Book implements Comparable<Book> {
 
     public long getHistory() {
         return mHistory;
+    }
+
+    public void setMemo(String memo) {
+        if (memo != null) {
+            this.mMemo = memo;
+        }
+    }
+
+    @Nullable
+    public String getMemo() {
+        return mMemo;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

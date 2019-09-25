@@ -54,6 +54,9 @@ public interface BooksDao {
     @Query("UPDATE books SET history = :current WHERE id = :bookId")
     void updateHistory(String bookId, long current);
 
+    @Query("UPDATE books SET memo = :memo WHERE id = :bookId")
+    void updateMemo(String bookId, String memo);
+
 //    @Query("UPDATE books SET completed = :completed WHERE entryid = :bookId")
 //    void updateCompleted(String bookId, boolean completed);
 

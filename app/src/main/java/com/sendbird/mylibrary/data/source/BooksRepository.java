@@ -332,6 +332,23 @@ public class BooksRepository implements BooksDataSource {
         mCachedBooks.remove(bookId);
     }
 
+    @Override
+    public void addMemo(@NonNull String bookId, @Nullable String memo) {
+        checkNotNull(bookId);
+        mBooksLocalDataSource.addMemo(bookId, memo);
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedBooks == null) {
+            mCachedBooks = new LinkedHashMap<>();
+        }
+
+        Book updatedBook = mCachedBooks.get(bookId);
+        if (updatedBook != null) {
+            updatedBook.setMemo(memo);
+            mCachedBooks.put(bookId, updatedBook);
+        }
+    }
+
     private void getBooksFromRemoteDataSource(@NonNull final LoadBooksCallback callback) {
         mBooksRemoteDataSource.getBooks(new LoadBooksCallback() {
 

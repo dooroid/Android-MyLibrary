@@ -1,6 +1,7 @@
 package com.sendbird.mylibrary.data.source;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.sendbird.mylibrary.data.Book;
 
@@ -47,4 +48,6 @@ public interface BooksDataSource {
     void deleteAllBooks();
 
     void deleteBook(@NonNull String bookId);
+
+    void addMemo(@NonNull String bookId, @Nullable String memo);
 }

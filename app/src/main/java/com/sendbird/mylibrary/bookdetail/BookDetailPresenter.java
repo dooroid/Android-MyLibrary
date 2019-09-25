@@ -70,4 +70,10 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
             mBooksRepository.addHistory(mBook);
         }
     }
+
+    @Override
+    public void addMemo(String memo) {
+        mBooksRepository.addMemo(mBookId, memo);
+        mBookDetailView.showMemo(memo);
+    }
 }

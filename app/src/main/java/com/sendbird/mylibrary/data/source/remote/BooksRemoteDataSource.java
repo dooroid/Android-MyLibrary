@@ -189,4 +189,9 @@ public class BooksRemoteDataSource implements BooksDataSource {
     public void deleteBook(@NonNull String bookId) {
 
     }
+
+    @Override
+    public void addMemo(@NonNull String bookId, @Nullable String memo) {
+
+    }
 }

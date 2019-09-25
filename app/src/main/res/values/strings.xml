@@ -18,4 +18,9 @@
     <string name="rating_key">Rating</string>
     <string name="colon"> : </string>
 
+    <string name="memo_title">Please Enter Memo</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCLE</string>
+    <string name="remove">REMOVE</string>
+
 </resources>

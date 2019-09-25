@@ -4,12 +4,29 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-        android:id="@+id/include_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/detail_books_holder"
-        />
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/detail_books_holder"
+            />
+
+        <TextView
+            android:id="@+id/memo_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_item_padding"
+            android:visibility="invisible"
+            android:padding="@dimen/list_item_padding"
+            android:background="@android:color/holo_orange_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/contentFrame"
@@ -24,6 +41,16 @@
         android:src="@drawable/ic_star_disabled"
         app:layout_anchor="@id/contentFrame"
         app:layout_anchorGravity="bottom|right|end"
+        app:fabSize="normal" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_memo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_write"
+        app:layout_anchor="@id/contentFrame"
+        app:layout_anchorGravity="bottom|left|end"
         app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,14 +1,17 @@
 package com.sendbird.mylibrary.bookdetail;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -41,6 +44,8 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
     private TextView mYear;
     private TextView mRating;
     private TextView mDesc;
+
+    private TextView mMemoView;
 
     private FloatingActionButton mBookmark;
 
@@ -79,14 +84,46 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mRating = root.findViewById(R.id.rating_text);
         mDesc = root.findViewById(R.id.desc_text);
 
+        mMemoView = root.findViewById(R.id.memo_view);
+
         // Set up floating action button
         mBookmark = root.findViewById(R.id.fab_bookmark);
-
         mBookmark.setImageResource(R.drawable.ic_star_disabled);
         mBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.bookmarkBook();
+            }
+        });
+
+        FloatingActionButton memoEdit = root.findViewById(R.id.fab_memo);
+        memoEdit.setImageResource(R.drawable.ic_write);
+        memoEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+                View memoView = inflater.inflate(R.layout.memo_dialog, null);
+                final EditText memo = memoView.findViewById(R.id.memo_edit);
+
+                builder.setTitle(R.string.memo_title)
+                        .setView(memoView)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mPresenter.addMemo(memo.getText().toString());
+                            }})
+                        .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }})
+                        .setNegativeButton(R.string.remove, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mPresenter.addMemo("");
+                            }});
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -116,6 +153,7 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
         mYear.setText(book.getYear());
         mRating.setText(book.getRating());
         mDesc.setText(book.getDesc());
+        showMemo(book.getMemo());
 
         mPresenter.addHistory();
     }
@@ -126,6 +164,16 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
             mBookmark.setImageResource(R.drawable.ic_star_enabled);
         } else {
             mBookmark.setImageResource(R.drawable.ic_star_disabled);
+        }
+    }
+
+    @Override
+    public void showMemo(String memo) {
+        if (memo == null || memo.isEmpty()) {
+            mMemoView.setVisibility(View.INVISIBLE);
+        } else {
+            mMemoView.setVisibility(View.VISIBLE);
+            mMemoView.setText(memo);
         }
     }
 }
