@@ -351,7 +351,9 @@ public class BooksRepository implements BooksDataSource {
 
     public List<String> getSearchHistory() {
         if (mSearcedBookCache != null && mSearcedBookCache.keySet().size() != 0) {
-            return new ArrayList<>(mSearcedBookCache.keySet());
+            ArrayList<String> history = new ArrayList<>(mSearcedBookCache.keySet());
+            Collections.reverse(history);
+            return history;
         } else {
             return null;
         }
