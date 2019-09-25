@@ -90,7 +90,7 @@ public class BooksRepository implements BooksDataSource {
 
         // Load from server/persisted if needed.
 
-        // Is the task in the local data source? If not, query the network.
+        // Is the book in the local data source? If not, query the network.
         mBooksLocalDataSource.getBook(bookId, new GetBookCallback() {
             @Override
             public void onBookLoaded(Book book) {

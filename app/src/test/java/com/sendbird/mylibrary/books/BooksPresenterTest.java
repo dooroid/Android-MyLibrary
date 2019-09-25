@@ -47,7 +47,7 @@ public class BooksPresenterTest {
         // Get a reference to the class under test
         mBooksPresenter = new BooksPresenter(mBooksRepository, mBooksView);
 
-        // We start the tasks to 3, with one active and two completed
+        // We start the books to 3, with one active and two completed
         BOOKS = Lists.newArrayList(new Book("One Thing", null, "1", null, null, null, null, null, null, null, null, null, null, null, true, 0L),
                 new Book("The 5AM Miracle", null, "2", null, null, null, null, null, null, null, null, null, null, null, true, 0L),
                 new Book("The Power of Detail", null, "3", null, null, null, null, null, null, null, null, null, null, null, true, 0L));

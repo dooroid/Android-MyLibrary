@@ -132,11 +132,11 @@ public class BooksRepositoryTest {
 
     @Test
     public void addBookmarkToServiceAPIUpdatesCache() {
-        // Given a stub active task with title and description added in the repository
+        // Given a stub active book with title and description added in the repository
         Book newBook = BOOKS.get(0);
         mBooksRepository.saveBook(newBook);
 
-        // When a task is completed to the tasks repository
+        // When a book is completed to the books repository
         mBooksRepository.addBookmark(newBook);
 
         // Then the service API and persistent repository are called and the cache is updated
@@ -148,11 +148,11 @@ public class BooksRepositoryTest {
 
     @Test
     public void removeBookmarkToServiceAPIUpdatesCache() {
-        // Given a stub active task with title and description added in the repository
+        // Given a stub active book with title and description added in the repository
         Book newBook = BOOKS.get(1);
         mBooksRepository.saveBook(newBook);
 
-        // When a task is completed to the tasks repository
+        // When a book is completed to the books repository
         mBooksRepository.removeBookmark(newBook);
 
         // Then the service API and persistent repository are called and the cache is updated
@@ -164,11 +164,11 @@ public class BooksRepositoryTest {
 
     @Test
     public void addHistoryToServiceAPIUpdatesCache() {
-        // Given a stub active task with title and description added in the repository
+        // Given a stub active book with title and description added in the repository
         Book newBook = BOOKS.get(0);
         mBooksRepository.saveBook(newBook);
 
-        // When a task is completed to the tasks repository
+        // When a book is completed to the books repository
         mBooksRepository.addHistory(newBook);
 
         // Then the service API and persistent repository are called and the cache is updated
@@ -180,11 +180,11 @@ public class BooksRepositoryTest {
 
     @Test
     public void removeHistoryToServiceAPIUpdatesCache() {
-        // Given a stub active task with title and description added in the repository
+        // Given a stub active book with title and description added in the repository
         Book newBook = BOOKS.get(0);
         mBooksRepository.saveBook(newBook);
 
-        // When a task is completed to the tasks repository
+        // When a book is completed to the books repository
         mBooksRepository.removeHistory(newBook);
 
         // Then the service API and persistent repository are called and the cache is updated
@@ -238,10 +238,10 @@ public class BooksRepositoryTest {
     }
 
     /**
-     * Convenience method that issues two calls to the tasks repository
+     * Convenience method that issues two calls to the books repository
      */
     private void twoBooksLoadCallsToRepository(BooksDataSource.LoadBooksCallback callback) {
-        // When tasks are requested from repository
+        // When books are requested from repository
         mBooksRepository.getBooks(callback); // First call to API
 
         // Use the Mockito Captor to capture the callback
@@ -261,7 +261,7 @@ public class BooksRepositoryTest {
     }
 
     private void twoBookGetCallsToRepository(BooksDataSource.GetBookCallback callback) {
-        // When tasks are requested from repository
+        // When books are requested from repository
         mBooksRepository.getBook(BOOK_ID, callback); // First call to API
 
         // Use the Mockito Captor to capture the callback

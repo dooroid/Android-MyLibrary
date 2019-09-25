@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Immutable model class for a Task.
+ * Immutable model class for a Book.
  */
 @Entity(tableName = "books")
 public final class Book implements Comparable<Book> {
