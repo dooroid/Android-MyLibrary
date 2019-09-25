@@ -37,4 +37,9 @@ public class HistoryPresenter implements HistoryContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void removeHistory(String bookId) {
+        mBooksRepository.removeHistory(bookId);
+    }
 }

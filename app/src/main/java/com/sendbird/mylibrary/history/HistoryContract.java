@@ -13,6 +13,6 @@ public interface HistoryContract {
     }
 
     interface Presenter extends BasePresenter {
-
+        void removeHistory(String bookId);
     }
 }
