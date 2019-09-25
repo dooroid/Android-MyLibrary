@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.BookItemListener;
@@ -72,8 +73,12 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         mSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                mPresenter.searchBooks(textView.getText().toString());
-                return true;
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    mPresenter.searchBooks(textView.getText().toString());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
 
@@ -96,5 +101,10 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_list_item_1, history);
         mSearchBox.setAdapter(adapter);
+    }
+
+    @Override
+    public void showNotice(int resId) {
+        Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
     }
 }

@@ -2,6 +2,7 @@ package com.sendbird.mylibrary.bookdetail;
 
 import androidx.annotation.NonNull;
 
+import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.data.source.BooksDataSource;
 import com.sendbird.mylibrary.data.source.BooksRepository;
@@ -43,6 +44,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
             @Override
             public void onDataNotAvailable() {
                 System.out.println("onDataNotAvailable");
+                mBookDetailView.showNotice(R.string.notice_no_data);
             }
         });
     }
@@ -51,12 +53,14 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     public void removeBookmark() {
         mBooksRepository.removeBookmark(mBookId);
         mBookDetailView.showBookmark(false);
+        mBookDetailView.showNotice(R.string.notice_remove_bookmark);
     }
 
     @Override
     public void addBookmark() {
         mBooksRepository.addBookmark(mBookId);
         mBookDetailView.showBookmark(true);
+        mBookDetailView.showNotice(R.string.notice_add_bookmark);
     }
 
     @Override

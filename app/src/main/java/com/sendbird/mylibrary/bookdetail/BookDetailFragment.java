@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.sendbird.mylibrary.R;
 import com.sendbird.mylibrary.data.Book;
 
@@ -180,5 +181,10 @@ public class BookDetailFragment extends Fragment implements BookDetailContract.V
             mMemoView.setVisibility(View.VISIBLE);
             mMemoView.setText(memo);
         }
+    }
+
+    @Override
+    public void showNotice(int resId) {
+        Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
     }
 }

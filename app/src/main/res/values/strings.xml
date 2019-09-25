@@ -29,4 +29,10 @@
     <string name="authors_sort">Sort by Authors</string>
     <string name="publisher_sort">Sort by Publisher</string>
 
+    <string name="notice_loading">Loading...</string>
+    <string name="notice_no_data">No Data</string>
+
+    <string name="notice_add_bookmark">Added to bookmark.</string>
+    <string name="notice_remove_bookmark">Bookmark was removed.</string>
+
 </resources>

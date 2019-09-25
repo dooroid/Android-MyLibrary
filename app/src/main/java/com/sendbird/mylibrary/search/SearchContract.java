@@ -14,6 +14,8 @@ public interface SearchContract {
 
         void updateSearchHistory(List<String> history);
 
+        void showNotice(int resId);
+
     }
 
     interface Presenter extends BasePresenter {

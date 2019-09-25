@@ -122,6 +122,11 @@ public class BooksRemoteDataSource implements BooksDataSource {
             public void onResponse(@Nullable Call<ResponseBody> call,
                                    @Nullable Response<ResponseBody> response) {
                 if (response != null && response.body() != null && response.body().error == 0) {
+                    if (response.body().total == 0) {
+                        callback.onDataNotAvailable();
+                        return;
+                    }
+
                     if (response.body().total <= 10) {
                         callback.onBooksLoaded(response.body().books);
                     } else {

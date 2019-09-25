@@ -14,6 +14,7 @@ public interface BookDetailContract {
 
         void showMemo(String memo);
 
+        void showNotice(int resId);
     }
 
     interface Presenter extends BasePresenter {
