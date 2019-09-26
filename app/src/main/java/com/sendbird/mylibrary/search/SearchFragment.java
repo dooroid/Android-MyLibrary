@@ -73,7 +73,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         mSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                     mPresenter.searchBooks(textView.getText().toString());
                     return true;
                 } else {
