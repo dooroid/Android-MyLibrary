@@ -1,5 +1,6 @@
 package com.sendbird.mylibrary.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.sendbird.mylibrary.R;
+import com.sendbird.mylibrary.bookdetail.BookDetailActivity;
 import com.sendbird.mylibrary.data.Book;
 import com.sendbird.mylibrary.ui.BookItemListener;
 import com.sendbird.mylibrary.ui.MarginItemDecoration;
@@ -35,6 +37,13 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     private AutoCompleteTextView mSearchBox;
 
+    private BookItemListener mItemListener = new BookItemListener() {
+        @Override
+        public void onBookClick(Book clickedBook) {
+            mPresenter.openBookDetails(clickedBook);
+        }
+    };
+
     public static SearchFragment newInstance() {
         return new SearchFragment();
     }
@@ -47,12 +56,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SimpleBooksAdapter(new ArrayList<Book>(0), new BookItemListener() {
-            @Override
-            public void onBookClick(Book clickedBook) {
-
-            }
-        });
+        mAdapter = new SimpleBooksAdapter(new ArrayList<Book>(0), mItemListener);
     }
 
     @Nullable
@@ -106,5 +110,12 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void showNotice(int resId) {
         Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBookDetailsUi(String bookId) {
+        Intent intent = new Intent(getContext(), BookDetailActivity.class);
+        intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, bookId);
+        startActivity(intent);
     }
 }

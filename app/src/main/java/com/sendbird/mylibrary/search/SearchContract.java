@@ -16,11 +16,14 @@ public interface SearchContract {
 
         void showNotice(int resId);
 
+        void showBookDetailsUi(String bookId);
+
     }
 
     interface Presenter extends BasePresenter {
 
         void searchBooks(String str);
 
+        void openBookDetails(Book clickedBook);
     }
 }

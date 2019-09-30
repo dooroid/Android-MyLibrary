@@ -46,4 +46,10 @@ public class SearchPresenter implements SearchContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void openBookDetails(Book clickedBook) {
+        checkNotNull(clickedBook, "requestedBook cannot be null!");
+        mSearchView.showBookDetailsUi(clickedBook.getId());
+    }
 }
